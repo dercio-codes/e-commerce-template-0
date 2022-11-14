@@ -25,11 +25,12 @@ const images = [
     			xs:'0.5rem',
     			md:'2.5rem',
     		},
-    		minHeight:'65vh',
+    		// minHeight:'65vh',
     		display:'flex',
     		flexDirection:'column',
     		justifyContent:'center',
     		zIndex:'9',
+    		// background:'red'
     		// borderBottom:'1px solid red'
     		 }}>
 
@@ -37,7 +38,7 @@ const images = [
 
     		 <Grid container>
     		 <Grid item xs={12} lg={6}> 
-    		 <Box sx={{ display:'flex' , justifyContent:'' , alignItems:'flex-end' , paddingRight:'34px' }}>
+    		 <Box sx={{ display:'flex' , justifyContent:'', flexDirection:{ xs:'column' , md:'row' } , alignItems:'flex-end' , paddingRight:'34px' }}>
     		<Typography sx={{ fontSize:'108px' , color:'' ,margin:'0', padding:'0' , fontWeight:'600' }}>Sunday Blom. </Typography>
     		 <Box className="pulsate-fwd" sx={{ 
     				width:{ xs:'100px', md:'120px'} , 
@@ -72,8 +73,8 @@ const images = [
     		<Typography sx={{ fontSize:'42px' , color:Theme["FOURTH_COLOR"] , padding:'0 0' , fontWeight:'600' }}> 04 December 2022 </Typography>
 
     		<Typography sx={{ fontSize:'32px' , color:Theme["FOURTH_COLOR"] , padding:'0 0' , fontWeight:'400' }}> Tired of missing out on new merch? </Typography>
-    		 <Box sx={{ display:'flex' , alignItems:'center' , background:'' }} > 
-	<TextField sx={{ width:'370px' , padding:'16px 0' }}  placeholder={"mail@example.com"}/>
+    		 <Box sx={{ display:'flex' , alignItems:'center' , background:'' , }} > 
+	<TextField sx={{ width:{ xs:'100%', md:'370px'} , padding:'16px 0' }}  placeholder={"mail@example.com"}/>
     		<Button sx={{ background:Theme["FOURTH_COLOR"],padding:'16px 21px' , margin:'0 8px' ,color:'#eee' , fontWeight:600 , "&:hover":{color:Theme["FOURTH_COLOR"]} }}>Subscribe</Button>
     	
     		 </Box>

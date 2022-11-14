@@ -46,14 +46,14 @@ export default function Product(props) {
     		justifyContent:'center'
     		 }}>
 
-    		<Typography sx={{ fontSize:'36px' , color:'' , padding:'34px 21px' , fontWeight:'600' }}> {props.sectionTitle} </Typography>
+    		<Typography sx={{ fontSize:{xs:'24px' , md:'36px'} , color:'' , padding:'34px 21px' , fontWeight:'600' }}> {props.sectionTitle} </Typography>
 
     		<Box sx={{ display:props.hidden ? 'none' : 'flex' , justifyContent:'space-between' , alignItems:'center', padding:'34px 0', width:'100%' , background:'' }}>
 
 				<Box sx={{ display:'flex' , alignItem:'center' }}>
     		<Typography sx={{ fontSize:'21px' , color:'' , padding:'12px' }}> Sort by : </Typography>
 
-				<Select value={"Filter by :"} sx={{ padding:'0 34px' }}>
+				<Select value={"Filter by :"} sx={{ height:{xs:'fit-content' , md:'auto'} , padding:'0 34px' }}>
 					{
 						SortBy.map(item => (<MenuItem key={item} value={item}>{item}</MenuItem>))
 					}
@@ -64,7 +64,7 @@ export default function Product(props) {
 				<Box sx={{ display:'flex' , alignItem:'center' }}>
     		<Typography sx={{ fontSize:'21px' , color:'' , padding:'12px' }}> Filter by : </Typography>
 
-				<Select value={"Filter by :"} sx={{ padding:'0 34px' }}>
+				<Select value={"Filter by :"} sx={{ height:{xs:'fit-content' , md:'auto'} , padding:'0 34px' }}>
 					{
 						Categories.map(item => (<MenuItem key={item} value={item}>{item}</MenuItem>))
 					}

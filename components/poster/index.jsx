@@ -16,7 +16,7 @@ export default function Poster() {
     		// backgroundSize:{ xs: 'cover' , md:'contain'},
     		minHeight:'100vh' , 
     		display:'flex',
-    		flexDirection:{ md:'column' , lg:'row'},
+    		flexDirection:{ xs:'column' , lg:'row'},
     		justifyContent:'center'
     		 }}>
 
