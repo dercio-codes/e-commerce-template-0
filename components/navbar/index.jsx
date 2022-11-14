@@ -32,6 +32,7 @@ padding:{
     		 }}>
     
   	<Box sx={{ width:'100%' , height:'80px' , background:'' , display:'flex' , justifyContent:'space-between' }}>
+<Box sx={{ width:'120px' , background:'red', height:'120px' , backgroundImage:'url("/sunday-blom-logo.png")' , backgroundPosition:'center' , backgroundSize:'contain', filter:'invert(1)' }}  />
     	<Box sx={{  width:'60%', margin:'0 auto' , height:'100%' , background:'', display:'flex' , justifyContent:'space-around' , alignItems:'center' }}>
     	{
     		Links.map((item,index)=>(
