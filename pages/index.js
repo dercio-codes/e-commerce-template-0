@@ -1,20 +1,19 @@
 import { Box , Grid } from '@mui/material';
-import Main from "../components/main"
+import MainBanner from "../components/main"
 import Poster from "../components/poster"
+import Navbar from "../components/navbar"
+import Product from "../components/product"
 
 
 export default function Home() {
   return (
-  <div>
-  <Grid container>
-    <Grid item xs={12} md={6} sx={{ height:'100vh' , background:'#F0C138' }}>
+  <div className="App">
+  <Navbar/>
+ 
+        <MainBanner />
+        <Product />
       <Poster />
-    </Grid>
-        <Grid item xs={12} md={6} sx={{ height:'100vh' , background:'#F2AD3F' }}>
-        <Main />
-    </Grid>
-  </Grid>
-
+ 
   </div>
   )
 }

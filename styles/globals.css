@@ -2,6 +2,7 @@ html,
 body {
   padding: 0;
   margin: 0;
+  background: #eee;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
@@ -15,9 +16,9 @@ a {
   box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   html {
-    color-scheme: dark;
+    color-scheme: light;
   }
   body {
     color: white;
@@ -26,97 +27,15 @@ a {
 }
 
 
-.wrapper {
-  margin: auto;
-  width: 60%;
-  text-align: center;
-  line-height: 2em;
+.App{
+  padding: 0rem 2.5rem;
 }
 
-.hover .cursor-dot {
-  width: 100px;
-  height: 100px;
-  z-index: -1;
-  background-color: lightblue;
+@media (max-width: 1200px){
+  #banner-img{
+    display: none;
+  }
+  .App{
+  padding: 0rem 0rem;
 }
-
-.hover .cursor-border {
-  z-index: -1;
-}
-
-.link {
-  padding: 1em;
-}
-
-.react-hover .cursor-border {
-  background-color: white;
-  width: 50px;
-  height: 50px;
-  border-radius: 0;
-  z-index: -1;
-}
-
-.react-hover .cursor-dot {
-  z-index: -3;
-}
-
-.author {
-  color: orange;
-  font-weight: 800;
-  font-size: 1.3em;
-}
-
-.author-on-hover .cursor-dot {
-  width: 100px;
-  height: 100px;
-  background-color: gray;
-  z-index: -1;
-}
-
-.author-on-hover .cursor-border {
-  z-index: -1;
-}
-
-.head {
-  color: bisque;
-}
-
-.head-hover .cursor-border {
-  border: 5px dotted darkorange;
-}
-
-.head-hover .cursor-dot {
-  background-color: purple;
-  width: 20px;
-  height: 20px;
-}
-
-.children {
-  color: rgb(114, 253, 0);
-}
-
-.children-hover .cursor-dot {
-  width: 600px;
-  height: 600px;
-  background-color: white;
-  color: #333;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.children-hover .cursor-border {
-  z-index: -1;
-}
-
-.h3 {
-  color: #333;
-  padding: 2em;
-}
-
-.react-icon {
-  width: 200px;
-  position: absolute;
-  top: 2em;
-  right: 10.5em;
 }
