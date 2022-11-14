@@ -2,9 +2,10 @@ import * as React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
-import { Box  , Button , Grid , TextField } from '@mui/material';
+import { Box  , Button , Select , MenuItem , Grid ,Paper , TextField } from '@mui/material';
 import * as Theme from "../../constants"
 import ProductItem from "./product-item"
+import AddIcon from '@mui/icons-material/Add';
 export default function Product(props) {
 
 	const images = [
@@ -13,6 +14,20 @@ export default function Product(props) {
 		"https://media.dior.com/img/en_int/sku/couture/313C507A5656_C070_T64?imwidth=460",
 		"https://media.dior.com/img/en_int/sku/couture/113J692A0614_C585_TXXS?imwidth=460",
 		"https://media.dior.com/img/en_int/sku/couture/313M235AT521_C486_TXXS?imwidth=460"
+	]
+
+	const Categories = [
+	"Hoodies",
+	"Shorts",
+	"Beanies",
+	"T-Shirts",
+	"Bucket Hats",
+	]
+
+		const SortBy = [
+		"Latest ( Ascending )",
+		"Latest ( Descening )",
+		"Time",
 	]
 
   return (
@@ -33,6 +48,30 @@ export default function Product(props) {
 
     		<Typography sx={{ fontSize:'36px' , color:'' , padding:'34px 21px' , fontWeight:'600' }}> {props.sectionTitle} </Typography>
 
+    		<Box sx={{ display:props.hidden ? 'none' : 'flex' , justifyContent:'space-between' , alignItems:'center', padding:'34px 0', width:'100%' , background:'' }}>
+
+				<Box sx={{ display:'flex' , alignItem:'center' }}>
+    		<Typography sx={{ fontSize:'21px' , color:'' , padding:'12px' }}> Sort by : </Typography>
+
+				<Select value={"Filter by :"} sx={{ padding:'0 34px' }}>
+					{
+						SortBy.map(item => (<MenuItem key={item} value={item}>{item}</MenuItem>))
+					}
+    		</Select>
+				</Box>
+
+
+				<Box sx={{ display:'flex' , alignItem:'center' }}>
+    		<Typography sx={{ fontSize:'21px' , color:'' , padding:'12px' }}> Filter by : </Typography>
+
+				<Select value={"Filter by :"} sx={{ padding:'0 34px' }}>
+					{
+						Categories.map(item => (<MenuItem key={item} value={item}>{item}</MenuItem>))
+					}
+    		</Select>
+				</Box>
+    		</Box>
+
     		 <Grid container spacing={0}>
     		 {
     		 	images.map((item,index)=>(
@@ -41,6 +80,13 @@ export default function Product(props) {
     		 </Grid>
     		 		))
     		 }
+
+    		  <Grid item xs={6} md={4} lg={2.4} sx={{ display:{lg:'none' , xs:'flex'} , justifyContent:'center' , background:'rgba()' , alignItems:'center' }}>
+				<Paper sx={{ width:'100%' , height:'100%' , display:'flex' , alignItems:'center', justifyContent:'center' , flexDirection:'column' , background:'transparent' , opacity:'0.5' , "&:hover":{ opacity:'1' } ,   }} elevation={0}> 
+<AddIcon sx={{ fontSize:'84px' }}  />
+View More
+				 </Paper>
+    		 </Grid>
     		 </Grid>
     </Box>
   );

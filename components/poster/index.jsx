@@ -12,13 +12,29 @@ export default function Poster() {
   return (
     <Box sx={{ 
     		width: '100%' , 
-    		backgroundImage:'url("https://www.dior.com/couture/var/dior/storage/images/pushs-editos/folder-spring-23/folder-wave-1/313m646at503c584/38409437-1-eng-GB/313m646at503c584_1440_1200.jpg")',
-    		backgroundSize:{ xs: 'cover' , md:'contain'},
-    		height:'100vh' , 
+    		// backgroundImage:'url("https://www.dior.com/couture/var/dior/storage/images/pushs-editos/folder-spring-23/folder-wave-1/313m646at503c584/38409437-1-eng-GB/313m646at503c584_1440_1200.jpg")',
+    		// backgroundSize:{ xs: 'cover' , md:'contain'},
+    		minHeight:'100vh' , 
     		display:'flex',
-    		flexDirection:'column',
+    		flexDirection:{ md:'column' , lg:'row'},
     		justifyContent:'center'
     		 }}>
+
+
+    		 <Box sx={{
+    		width: { xs:'100%' ,  lg : '50%'} , 
+    		backgroundImage:'url("https://www.dior.com/couture/var/dior/storage/images/pushs-editos/folder-spring-23/folder-wave-1/313m646at503c584/38409437-1-eng-GB/313m646at503c584_1440_1200.jpg")',
+    		backgroundSize:{ xs: 'cover' , md:'cover'},
+    		height:'100vh' , 
+
+    		 }} />
+    		 <Box sx={{
+    		width: { xs:'100%' ,  lg : '50%'} , 
+    		backgroundImage:'url("/banner-1.jpg")',
+    		backgroundSize:{ xs: 'cover' , md:'cover'},
+    		height:'100vh' , 
+
+    		 }} />
     
     </Box>
   );

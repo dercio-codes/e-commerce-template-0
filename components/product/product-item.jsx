@@ -23,9 +23,14 @@ export default function ProductItem(props) {
     		 }}>
 
     		 <img src={props.image} alt="" style={{ width:"100%" }} />
-    		 <Rating  />
-    		<Typography sx={{ fontSize:'21px' , color:Theme["FOURTH_COLOR"] , textAlign:'center' , padding:'18px 21px' , fontWeight:'600' }}> Sunday Blom Bucket Hat </Typography>
-    		<Button sx={{ background:Theme["FOURTH_COLOR"],padding:'16px 12px' , margin:'0 3px' ,color:'#eee' , width:'100%' ,fontWeight:600, "&:hover":{color:Theme["FOURTH_COLOR"]} }}>Add To Cart</Button>
+    		 {/*<Rating  />*/}
+        <Typography sx={{ fontSize:'21px' , color:Theme["FOURTH_COLOR"] , textAlign:'center' , padding:'8px 21px' , fontWeight:'600' }}> Sunday Blom Bucket Hat </Typography>
+    		<Typography sx={{ fontSize:'21px' , color:Theme["FOURTH_COLOR"] , textAlign:'center' , padding:'10px 21px' , fontWeight:'600' }}> R300.00 </Typography>
+    		
+<Box sx={{ display:'flex' , width:'100%' }}>
+  <TextField type="number" value={1} sx={{width:'30%'}} />
+        <Button sx={{ background:Theme["FOURTH_COLOR"],padding:'16px 12px' , margin:'0 3px' ,color:'#eee' , width:'90%' ,fontWeight:600, "&:hover":{color:Theme["FOURTH_COLOR"]} }}>Add To Cart</Button>
+</Box>
 
     </Paper>
   );

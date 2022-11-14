@@ -6,8 +6,17 @@ import { Box , Button , Grid , TextField } from '@mui/material';
 import * as Theme from "../../constants"
 
 export default function MainBanner() {
-  const [value, setValue] = React.useState(0);
 
+const images = [
+"https://images.pexels.com/photos/996329/pexels-photo-996329.jpeg?auto=compress&cs=tinysrgb&w=1600",
+"https://images.pexels.com/photos/52518/jeans-pants-blue-shop-52518.jpeg?auto=compress&cs=tinysrgb&w=1600",
+"https://images.pexels.com/photos/4495705/pexels-photo-4495705.jpeg?auto=compress&cs=tinysrgb&w=1600",
+"https://images.pexels.com/photos/1353503/pexels-photo-1353503.jpeg?auto=compress&cs=tinysrgb&w=1600",
+"https://images.pexels.com/photos/1937336/pexels-photo-1937336.jpeg?auto=compress&cs=tinysrgb&w=1600",
+"https://images.pexels.com/photos/1020370/pexels-photo-1020370.jpeg?auto=compress&cs=tinysrgb&w=1600",
+"https://images.pexels.com/photos/1176618/pexels-photo-1176618.jpeg?auto=compress&cs=tinysrgb&w=1600",
+"https://images.pexels.com/photos/581087/pexels-photo-581087.jpeg?auto=compress&cs=tinysrgb&w=1600",
+]
 
   return (
     <Box sx={{ 	
@@ -23,48 +32,155 @@ export default function MainBanner() {
     		zIndex:'9',
     		// borderBottom:'1px solid red'
     		 }}>
-    <Box sx={{ display:'flex' , maxHeight:'100vh' , width:"100%" ,background:'' }} >
-    		<Box sx={{ width:'50%' }} >
-    		<Typography sx={{ fontSize:'108px' , color:'' , padding:'0 21px' , fontWeight:'600' }}> Sunday Blom. </Typography>
 
-    		</Box>
-    		<Box sx={{ width:'50%' , display:'flex' , justifyContent:'flex-end' , alignItems:{xs:'flex-end' , md:"center"} }} >
-    			<Box sx={{ 
+
+
+    		 <Grid container>
+    		 <Grid item xs={12} lg={6}> 
+    		 <Box sx={{ display:'flex' , justifyContent:'' , alignItems:'flex-end' , paddingRight:'34px' }}>
+    		<Typography sx={{ fontSize:'108px' , color:'' ,margin:'0', padding:'0' , fontWeight:'600' }}>Sunday Blom. </Typography>
+    		 <Box className="pulsate-fwd" sx={{ 
     				width:{ xs:'100px', md:'120px'} , 
     				height:{ xs:'100px', md:'120px'} , 
     				display:'flex', 
     				justifyContent:'center' , alignItems:'center' , 
     				background:'#EB8658' , 
+    				// flexDirection:'column'
     				color:'#eee' , 
     				fontWeight:'600', 
     				transition:'300ms',
     				"&:hover":{
 							color:'#EB8658' ,
-							border:'5px solid #EB8658', 
+							border:'5px solid #EB8658',
+							// filter:'invert(1)', 
     					background:'#eee' , 
     					textDecoration:'underline'
     				},
-    				borderRadius:'50%' }} >Lets Blom</Box>
-    		</Box>
+    				borderRadius:'50%' }} >
+    				Lets Blom
+    				{/*<Box sx={{
+    					backgroundImage:'url("https://cdn-icons-png.flaticon.com/512/3106/3106417.png")',
+    				backgroundSize:'contain',
+    				backgroundPosition:'center',
+    				height:'30px',
+    				width:'30px',
+    				}} />*/}
+    				</Box>
+    		 </Box>
+    		<Typography sx={{ fontSize:'21px' , color:Theme["FOURTH_COLOR"] , padding:'0 0' , fontWeight:'400' }}> Next Event : </Typography>
+
+    		<Typography sx={{ fontSize:'42px' , color:Theme["FOURTH_COLOR"] , padding:'0 0' , fontWeight:'600' }}> 04 December 2022 </Typography>
+
+    		<Typography sx={{ fontSize:'32px' , color:Theme["FOURTH_COLOR"] , padding:'0 0' , fontWeight:'400' }}> Tired of missing out on new merch? </Typography>
+    		 <Box sx={{ display:'flex' , alignItems:'center' , background:'' }} > 
+	<TextField sx={{ width:'370px' , padding:'16px 0' }}  placeholder={"mail@example.com"}/>
+    		<Button sx={{ background:Theme["FOURTH_COLOR"],padding:'16px 21px' , margin:'0 8px' ,color:'#eee' , fontWeight:600 , "&:hover":{color:Theme["FOURTH_COLOR"]} }}>Subscribe</Button>
+    	
+    		 </Box>
+    		 </Grid>
+    		 <Grid item xs={12} lg={5} sx={{ height:'600px' , background:'' }}> 
+    		 <Box className="grid">
+    		 {
+    		 	images.map((item,index)=>(
+  						<Box key={item} sx={{ backgroundImage:`url("${item}")` }} className={`grid-item${index + 1}`}></Box>
+    		 		))
+    		 }
+{/*  <Box className="grid-item2"></Box>
+  <Box className="grid-item3"></Box>
+  <Box className="grid-item4"></Box>
+  <Box className="grid-item5"></Box>
+  <Box className="grid-item6"></Box>
+  <Box className="grid-item7"></Box>
+  <Box className="grid-item8"></Box>*/}
+</Box>
+    		 </Grid>
+    		 <Grid item xs={12} lg={2}> 
+    		{/* <Box sx={{ 
+    				width:{ xs:'100px', md:'150px'} , 
+    				height:{ xs:'100px', md:'150px'} , 
+    				display:'flex', 
+    				justifyContent:'center' , alignItems:'center' , 
+    				background:'#EB8658' , 
+    				// flexDirection:'column'
+    				color:'#eee' , 
+    				fontWeight:'600', 
+    				transition:'300ms',
+    				"&:hover":{
+							color:'#EB8658' ,
+							border:'5px solid #EB8658',
+							// filter:'invert(1)', 
+    					background:'#eee' , 
+    					textDecoration:'underline'
+    				},
+    				borderRadius:'50%' }} >
+    				Lets Blom
+    				<Box sx={{
+    					backgroundImage:'url("https://cdn-icons-png.flaticon.com/512/3106/3106417.png")',
+    				backgroundSize:'contain',
+    				backgroundPosition:'center',
+    				height:'30px',
+    				width:'30px',
+    				}} />
+    				</Box>*/}
+    		 </Grid>
+    		 
+    		 </Grid>
+
+
+    <Box sx={{ display:'flex' , maxHeight:'100vh' , width:"100%" ,background:'' }} >
+    		{/*<Box sx={{ width:'50%' }} >
+    		<Typography sx={{ fontSize:'108px' , color:'' , padding:'0 21px' , fontWeight:'600' }}> Sunday Blom. </Typography>
+
+    		</Box>*/}
+    	{/*	<Box sx={{ width:'50%' }} sx={{ display:'flex' , justifyContent:'flex-end' , alignItems:{xs:'flex-end' , md:"center"} }} >
+    			<Box sx={{ 
+    				width:{ xs:'100px', md:'150px'} , 
+    				height:{ xs:'100px', md:'150px'} , 
+    				display:'flex', 
+    				justifyContent:'center' , alignItems:'center' , 
+    				background:'#EB8658' , 
+    				// flexDirection:'column'
+    				color:'#eee' , 
+    				fontWeight:'600', 
+    				transition:'300ms',
+    				"&:hover":{
+							color:'#EB8658' ,
+							border:'5px solid #EB8658',
+							// filter:'invert(1)', 
+    					background:'#eee' , 
+    					textDecoration:'underline'
+    				},
+    				borderRadius:'50%' }} >
+    				Lets Blom
+    				<Box sx={{
+    					backgroundImage:'url("https://cdn-icons-png.flaticon.com/512/3106/3106417.png")',
+    				backgroundSize:'contain',
+    				backgroundPosition:'center',
+    				height:'30px',
+    				width:'30px',
+    				}} />
+    				</Box>
+    		</Box>*/}
     	</Box>
 
-    	<Box>
+    {/*	<Box>
     		<Typography sx={{ fontSize:'21px' , color:Theme["FOURTH_COLOR"] , padding:'0 21px' , fontWeight:'400' }}> Next Event : </Typography>
     		<Typography sx={{ fontSize:'42px' , color:Theme["FOURTH_COLOR"] , padding:'0 21px' , fontWeight:'600' }}> 04 December 2022 </Typography>
     		<Typography sx={{ fontSize:'32px' , color:Theme["FOURTH_COLOR"] , padding:'0 21px' , fontWeight:'400' }}> Tired of missing out on new merch? </Typography>
     	</Box>
-
+*/}
     	<Box sx={{ height:'100px', width:'100%', display:'flex', justifyContent:'space-between', alignItems:'center' , background:'' , margin:'21px auto' }} >
     	<Box sx={{ height:'100px', padding:'12px 21px', display:'flex', alignItems:'center' ,width:'100%', background:'' , margin:'0' }} >
-    		<TextField sx={{ width:'350px' }}  placeholder={"mail@example.com"}/>
+    	{/*	<TextField sx={{ width:'350px' }}  placeholder={"mail@example.com"}/>
     		<Button sx={{ background:Theme["FOURTH_COLOR"],padding:'16px 12px' , margin:'0 3px' ,color:'#eee' , fontWeight:600 , "&:hover":{color:Theme["FOURTH_COLOR"]} }}>Subscribe</Button>
-    	<img src="/model.png" id="banner-img" alt=""  
+    	*/}
+    	{/*<img src="/model.png" id="banner-img" alt=""  
     		style={{ 
     			margin:'0 34px' , 
     			scale:'1.1' , 
     			zIndex:9,
     			transform:'translateY(-72px)'
-    			 }} />
+    			 }} />*/}
     	</Box>
     	
     	<Box sx={{ height:'350px', width:'250px' , background:'' , margin:'0' }} >

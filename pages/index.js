@@ -11,9 +11,9 @@ export default function Home() {
   <Navbar/>
  
         <MainBanner />
-        <Product sectionTitle={"New Stock In"} />
+        <Product sectionTitle={"The Sunday Blom x Nov"} />
         <Poster />
-        <Product sectionTitle={"Summer Clothes"} />
+        <Product hidden={true} sectionTitle={"Summer Clothes"} />
  
   </div>
   )
