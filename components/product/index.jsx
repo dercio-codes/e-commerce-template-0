@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import { Box  , Button , Grid , TextField } from '@mui/material';
 import * as Theme from "../../constants"
 import ProductItem from "./product-item"
-export default function Product() {
+export default function Product(props) {
 
 	const images = [
 		"https://media.dior.com/img/en_int/sku/couture/193M638AT393_C084_TXXS?imwidth=460",
@@ -31,7 +31,7 @@ export default function Product() {
     		justifyContent:'center'
     		 }}>
 
-    		<Typography sx={{ fontSize:'48px' , color:'' , padding:'34px 21px' , fontWeight:'600' }}> New Stock In. </Typography>
+    		<Typography sx={{ fontSize:'36px' , color:'' , padding:'34px 21px' , fontWeight:'600' }}> {props.sectionTitle} </Typography>
 
     		 <Grid container spacing={0}>
     		 {

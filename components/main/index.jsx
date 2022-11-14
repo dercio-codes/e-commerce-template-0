@@ -57,7 +57,7 @@ export default function MainBanner() {
     	<Box sx={{ height:'100px', width:'100%', display:'flex', justifyContent:'space-between', alignItems:'center' , background:'' , margin:'21px auto' }} >
     	<Box sx={{ height:'100px', padding:'12px 21px', display:'flex', alignItems:'center' ,width:'100%', background:'' , margin:'0' }} >
     		<TextField sx={{ width:'350px' }}  placeholder={"mail@example.com"}/>
-    		<Button sx={{ background:Theme["FOURTH_COLOR"],padding:'16px 12px' , margin:'0 3px' ,color:'#eee' , fontWeight:600 , "&:hover":{color:Theme["FOURTH_COLOR"]} }}>Join Mailing List</Button>
+    		<Button sx={{ background:Theme["FOURTH_COLOR"],padding:'16px 12px' , margin:'0 3px' ,color:'#eee' , fontWeight:600 , "&:hover":{color:Theme["FOURTH_COLOR"]} }}>Subscribe</Button>
     	<img src="/model.png" id="banner-img" alt=""  
     		style={{ 
     			margin:'0 34px' , 
