@@ -1,0 +1,5 @@
+export const FIRST_COLOR = "#F2AD3F "
+export const SECOND_COLOR = "#F0C138"
+export const THIRD_COLOR = "#EB8658"
+export const FOURTH_COLOR = "#38241B"
+export const FIFTH_COLOR = "#985235"
