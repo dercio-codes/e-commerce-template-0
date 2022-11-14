@@ -36,8 +36,8 @@ export default function Product() {
     		 <Grid container spacing={0}>
     		 {
     		 	images.map((item,index)=>(
-    		 <Grid item xs={6} md={4} lg={2.4}>
-				<ProductItem key={item} image={item}/>
+    		 <Grid key={item} item xs={6} md={4} lg={2.4}>
+				<ProductItem image={item}/>
     		 </Grid>
     		 		))
     		 }
