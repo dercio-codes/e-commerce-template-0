@@ -13,6 +13,7 @@ export default function Home() {
         <MainBanner />
         <Product />
       <Poster />
+        <Product />
  
   </div>
   )

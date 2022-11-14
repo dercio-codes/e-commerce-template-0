@@ -13,7 +13,7 @@ export default function Poster() {
     <Box sx={{ 
     		width: '100%' , 
     		backgroundImage:'url("https://www.dior.com/couture/var/dior/storage/images/pushs-editos/folder-spring-23/folder-wave-1/313m646at503c584/38409437-1-eng-GB/313m646at503c584_1440_1200.jpg")',
-    		backgroundSize:'cover',
+    		backgroundSize:'contain',
     		height:'100vh' , 
     		display:'flex',
     		flexDirection:'column',
