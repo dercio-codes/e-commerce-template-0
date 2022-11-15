@@ -22,7 +22,7 @@ const images = [
     <Box sx={{ 	
     		width: '100%' , 
     		padding:{
-    			xs:'0.5rem',
+    			xs:'1.5rem',
     			md:'2.5rem',
     		},
     		// minHeight:'65vh',

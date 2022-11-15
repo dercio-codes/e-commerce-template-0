@@ -29,6 +29,7 @@ export default function ProductItem(props) {
           backgroundImage:`url("${props.image}")`,
           backgroundPosition:'center',
         backgroundSize:'contain' ,
+        backgroundRepeat:'no-repeat' ,
         display:'flex',
         // justifyContent:'flex-end',
         // padding:'21px'
