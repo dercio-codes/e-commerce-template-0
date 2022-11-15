@@ -53,7 +53,7 @@ export default function Product(props) {
 				<Box sx={{ display:'flex' , alignItems:'center' , width:{xs:'50%'} }}>
 
 								<TextField  select label={"Sort By :"}
-					sx={{ height:{xs:'fit-content', md:'auto'},minWidth:'250px' , color:'#111' , padding:'0' ,  '& .MuiOutlinedInput-root': {  // - The Input-root, inside the TextField-root
+					sx={{ height:{xs:'fit-content', md:'auto'},minWidth:{xs:'120px' , md:'250px'} ,maxWidth:'80%', color:'#111' , padding:'0' ,  '& .MuiOutlinedInput-root': {  // - The Input-root, inside the TextField-root
             '& fieldset': {            // - The <fieldset> inside the Input-root
                 color:Theme["FOURTH_COLOR"],
                 borderColor: '#999',   // - Set the Input border
@@ -77,7 +77,7 @@ export default function Product(props) {
 				<Box sx={{ display:'flex' , justifyContent:'flex-end' , background:'' , width:{xs:'50%'} }}>
 
 				<TextField  select label={"Filter By :"}
-					sx={{ height:{xs:'fit-content', md:'auto'},minWidth:'250px' , color:'#111' , padding:'0' ,  '& .MuiOutlinedInput-root': {  // - The Input-root, inside the TextField-root
+					sx={{ height:{xs:'fit-content', md:'auto'},minWidth:{xs:'120px' , md:'250px'} ,maxWidth:'80%', color:'#111' , padding:'0' ,  '& .MuiOutlinedInput-root': {  // - The Input-root, inside the TextField-root
             '& fieldset': {            // - The <fieldset> inside the Input-root
                 color:Theme["FOURTH_COLOR"],
                 borderColor: '#999',   // - Set the Input border

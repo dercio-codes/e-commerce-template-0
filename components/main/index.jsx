@@ -22,8 +22,8 @@ const images = [
     <Box sx={{ 	
     		width: '100%' , 
     		padding:{
-    			xs:'1.5rem',
-    			md:'2.5rem',
+    			xs:'2.5rem',
+    			// md:'2.5rem',
     		},
     		// minHeight:'65vh',
     		display:'flex',
@@ -38,7 +38,7 @@ const images = [
 
     		 <Grid container>
     		 <Grid item xs={12} lg={6}> 
-    		 <Box sx={{ display:'flex' , justifyContent:'', flexDirection:{ xs:'column' , md:'row' } , alignItems:'flex-end' , paddingRight:'34px' }}>
+    		 <Box sx={{ display:'flex' , justifyContent:'', flexDirection:{ xs:'column' , md:'row' } , alignItems:'flex-end' , paddingRight:{ xs:'0', md:'34px'} }}>
     		<Typography sx={{ fontSize:'108px' , color:'' ,margin:'0', padding:'0' , fontWeight:'600' }}>Sunday Blom. </Typography>
     		 <Box className="pulsate-fwd" sx={{ 
     				width:{ xs:'100px', md:'120px'} , 
