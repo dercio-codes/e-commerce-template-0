@@ -34,8 +34,8 @@ export default function Product(props) {
     <Box sx={{ 	
     		width: '100%' , 
     		padding:{
-    			// xs:'0.5rem',
-    			xs:'2.5rem',
+    			xs:'0.5rem',
+    			,d:'2.5rem',
     		},
     		zIndex:10,
     		minHeight:'50vh',
