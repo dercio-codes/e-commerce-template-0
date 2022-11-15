@@ -1,13 +1,16 @@
 import '../styles/globals.css'
 import dynamic from 'next/dynamic'
-
+import { createContext , useContext  , useState} from "react"
 const AnimatedCursor = dynamic(() => import('react-animated-cursor'), {
   ssr: false
 });
 
+export const DisplayLoader = createContext(false);
 function MyApp({ Component, pageProps }) {
+  const [ loading , setLoading ] = useState(false)
+
   return(
-<div>
+<DisplayLoader.Provider value={{ loading , setLoading }}>
   <AnimatedCursor innerSize={24}
       outerSize={48}
       color='56, 36, 27'
@@ -27,8 +30,13 @@ function MyApp({ Component, pageProps }) {
         'button',
         '.link'
       ]} />
-   <Component {...pageProps } />
-</div>
+
+       { loading ? ( 
+                 <div>Laindg</div>
+           ) : (
+          <Component {...pageProps } />
+           )}
+</DisplayLoader.Provider>
     )
 
 }

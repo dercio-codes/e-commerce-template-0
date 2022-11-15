@@ -15,7 +15,10 @@ a {
 * {
   box-sizing: border-box;
 }
-
+.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input{
+  border: 2px solid white;
+  color: white;
+}
 @media (prefers-color-scheme: light) {
   html {
     color-scheme: light;

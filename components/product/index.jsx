@@ -50,7 +50,7 @@ export default function Product(props) {
 
     		<Box sx={{ display:props.hidden ? 'none' : 'flex' , justifyContent:'space-between' , alignItems:'center', padding:'34px 0', width:'100%' , background:'' }}>
 
-				<Box sx={{ display:'flex' , alignItem:'center' }}>
+				<Box sx={{ display:'flex' , alignItems:'center' , width:{xs:'50%'} }}>
     		<Typography sx={{ fontSize:'21px' , color:'' , padding:'12px' }}> Sort by : </Typography>
 
 				<Select value={"Filter by :"} sx={{ height:{xs:'fit-content' , md:'auto'} , padding:'0 34px' }}>
@@ -61,7 +61,7 @@ export default function Product(props) {
 				</Box>
 
 
-				<Box sx={{ display:'flex' , alignItem:'center' }}>
+				<Box sx={{ display:'flex' , justifyContent:'flex-end' , background:'' , width:{xs:'50%'} }}>
     		<Typography sx={{ fontSize:'21px' , color:'' , padding:'12px' }}> Filter by : </Typography>
 
 				<Select value={"Filter by :"} sx={{ height:{xs:'fit-content' , md:'auto'} , padding:'0 34px' }}>
@@ -76,7 +76,7 @@ export default function Product(props) {
     		 {
     		 	images.map((item,index)=>(
     		 <Grid key={item} item xs={6} md={4} lg={2.4}>
-				<ProductItem image={item}/>
+				<ProductItem color={index % 2 === 0 ? 'rgba(255,0,0,.8)' : 'rgba(0,200,0,.8)'} special={index % 2 === 0 ? 'Hot In' : 'Sale'} image={item}/>
     		 </Grid>
     		 		))
     		 }
