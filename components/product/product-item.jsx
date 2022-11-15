@@ -125,7 +125,7 @@ export default function ProductItem(props) {
   ].map((item)=>{
 
 return(
-<Grid item md={4} xs={6} sx={{ opacity:'.8' , "&:hover" : { opacity:1 } }} >
+<Grid item md={4} key={item} xs={6} sx={{ opacity:'.8' , "&:hover" : { opacity:1 } }} >
              <img src={item} alt="" style={{ width:"100%" , objectFit:'contain' , objectPosition:'' }} />
      </Grid>
   )
