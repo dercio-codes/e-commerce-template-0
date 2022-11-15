@@ -35,7 +35,7 @@ export default function Product(props) {
     		width: '100%' , 
     		padding:{
     			xs:'0.5rem',
-    			,d:'2.5rem',
+    			md:'2.5rem',
     		},
     		zIndex:10,
     		minHeight:'50vh',
