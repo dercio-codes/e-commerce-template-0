@@ -49,7 +49,7 @@ padding:{
 
 	<Button onClick={() => setOpenDrawer(true)} sx={{ 
     				height:'100%' , 
-    				width:'100px',
+    				width:{ xs:'50px', md:'100px'},
     				padding:'8px',
     				scale:'.4' , 
     				borderTop:'3px solid #38241B',
