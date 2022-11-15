@@ -168,3 +168,16 @@ body, html {
   grid-row: 1/6;
 }
 
+
+
+.MuiSelect-outlined.MuiSelect-outlined, .MuiSelect-outlined.MuiSelect-outlined:active, .MuiSelect-outlined.MuiSelect-outlined:focus  {
+    background-color: transparent !important;
+    text-align: left;
+    font-family: sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+}
+
+.css-1sumxir-MuiFormLabel-root-MuiInputLabel-root.Mui-focused{
+  color: #38241B;
+}

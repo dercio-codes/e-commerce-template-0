@@ -72,16 +72,18 @@ export default function ProductItem(props) {
 
      </Grid>
      <Grid item xs={12} lg={4} sx={{padding:'2.5rem 0'}}>
-             <Typography sx={{ fontSize:'38px' , color:Theme["FOURTH_COLOR"] , textAlign:'' , padding:'8px 21px' , fontWeight:'600' }}> Sunday Blom Bucket Hat </Typography>
-        <Box>
+             <Typography sx={{ fontSize:'38px' , color:Theme["FOURTH_COLOR"] , textAlign:'center' , padding:'8px 21px' , fontWeight:'600' }}> Sunday Blom Bucket Hat </Typography>
+        <Box sx={{ display:'flex' , flexDirection:'column' , alignItems:'center' }}>
           <Typography sx={{ fontSize:'16px' , color:Theme["FOURTH_COLOR"] , textAlign:'' , margin:'0', padding:'8px 21px' , fontWeight:'600' }}> Size: </Typography>
-          <Button variant="outline" sx={{ border:'1px solid #black' }}>SM</Button>
+          <Box sx={{ display:'flex' , justifyContent:'center' , width:'100%'}}>
+<Button variant="outline" sx={{ border:'1px solid #black' }}>SM</Button>
           <Button variant="outline" sx={{ border:'1px solid #black' }}>M</Button>
           <Button variant="outline" sx={{ border:'1px solid #black' }}>L</Button>
           <Button variant="outline" sx={{ border:'1px solid #black' }}>XL</Button>
 
-          <Typography sx={{ fontSize:'16px' , color:Theme["FOURTH_COLOR"] , textAlign:'' , margin:'8px 0 0 0 ' , padding:'8px 21px' , fontWeight:'600' }}> Colors: </Typography>
-            <Box sx={{ width:'100%', display:'flex' , padding:'12px 16px'}}>
+          </Box>
+          <Typography sx={{ fontSize:'16px' ,  color:Theme["FOURTH_COLOR"] , textAlign:'' , margin:'8px 0 0 0 ' , padding:'8px 21px' , fontWeight:'600' }}> Colors: </Typography>
+            <Box sx={{ width:'100%', display:'flex' , justifyContent:'center' , padding:'12px 16px'}}>
               <Box type={"color"} value={"255,0,0"} style={{ width:'36px', height:'21px' , margin:'0 8px 0 0' , background:'rgba(255,0,0,.5)' , border:'none' }}/>
               <Box type={"color"} value={"255,0,0"} style={{ width:'36px', height:'21px' , margin:'0 8px 0 0' , background:'rgba(31,255,48,.8)' , border:'none' }}/>
               <Box type={"color"} value={"255,0,0"} style={{ width:'36px', height:'21px' , margin:'0 8px 0 0' , background:'rgba(89,24,89,.4)' , border:'none' }}/>
@@ -89,8 +91,21 @@ export default function ProductItem(props) {
 
             </Box>
 
-          <TextField type="number" value={1} sx={{width:'100%' , padding:"10px 21px"}} />
-          <ul>
+          <TextField label="Quantity" type="number" value={1} sx={{width:'95%', margin:"0 auto" , padding:"0" ,  '& .MuiOutlinedInput-root': {  // - The Input-root, inside the TextField-root
+            '& fieldset': {            // - The <fieldset> inside the Input-root
+                color:Theme["FOURTH_COLOR"],
+                borderColor: '#999',   // - Set the Input border
+            },
+            '&:hover fieldset': {
+                color:Theme["FOURTH_COLOR"],
+                borderColor: Theme["FOURTH_COLOR"], // - Set the Input border when parent has :hover
+            },
+            '&.Mui-focused fieldset': { // - Set the Input border when parent is focused 
+                color:Theme["FOURTH_COLOR"],
+                borderColor: Theme["FOURTH_COLOR"],
+            },
+        },}} />
+          <ul style={{ width:'100%' }}>
             <li>
              <Typography sx={{ fontSize:'16px' , color:Theme["FOURTH_COLOR"] , textAlign:'' , padding:'8px 21px' , fontWeight:'' }}> Durable and Drip</Typography>
             </li>

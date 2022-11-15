@@ -2,7 +2,7 @@ import * as React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
-import { Box  , Button , Select , MenuItem , Grid ,Paper , TextField } from '@mui/material';
+import { Box , OutlinedInput  , Button , Select , MenuItem , Grid ,Paper , TextField } from '@mui/material';
 import * as Theme from "../../constants"
 import ProductItem from "./product-item"
 import AddIcon from '@mui/icons-material/Add';
@@ -51,24 +51,51 @@ export default function Product(props) {
     		<Box sx={{ display:props.hidden ? 'none' : 'flex' , justifyContent:'space-between' , alignItems:'center', padding:'34px 0', width:'100%' , background:'' }}>
 
 				<Box sx={{ display:'flex' , alignItems:'center' , width:{xs:'50%'} }}>
-    		<Typography sx={{ fontSize:'21px' , color:'' , padding:'12px' }}> Sort by : </Typography>
 
-				<Select value={"Filter by :"} sx={{ height:{xs:'fit-content' , md:'auto'} , padding:'0 34px' }}>
-					{
+								<TextField  select label={"Sort By :"}
+					sx={{ height:{xs:'fit-content', md:'auto'},minWidth:'250px' , color:'#111' , padding:'0' ,  '& .MuiOutlinedInput-root': {  // - The Input-root, inside the TextField-root
+            '& fieldset': {            // - The <fieldset> inside the Input-root
+                color:Theme["FOURTH_COLOR"],
+                borderColor: '#999',   // - Set the Input border
+            },
+            '&:hover fieldset': {
+                color:Theme["FOURTH_COLOR"],
+                borderColor: Theme["FOURTH_COLOR"], // - Set the Input border when parent has :hover
+            },
+            '&.Mui-focused fieldset': { // - Set the Input border when parent is focused 
+                color:Theme["FOURTH_COLOR"],
+                borderColor: Theme["FOURTH_COLOR"],
+            },
+        },}}
+					>{
 						SortBy.map(item => (<MenuItem key={item} value={item}>{item}</MenuItem>))
 					}
-    		</Select>
+    		</TextField>
 				</Box>
 
 
 				<Box sx={{ display:'flex' , justifyContent:'flex-end' , background:'' , width:{xs:'50%'} }}>
-    		<Typography sx={{ fontSize:'21px' , color:'' , padding:'12px' }}> Filter by : </Typography>
 
-				<Select value={"Filter by :"} sx={{ height:{xs:'fit-content' , md:'auto'} , padding:'0 34px' }}>
+				<TextField  select label={"Filter By :"}
+					sx={{ height:{xs:'fit-content', md:'auto'},minWidth:'250px' , color:'#111' , padding:'0' ,  '& .MuiOutlinedInput-root': {  // - The Input-root, inside the TextField-root
+            '& fieldset': {            // - The <fieldset> inside the Input-root
+                color:Theme["FOURTH_COLOR"],
+                borderColor: '#999',   // - Set the Input border
+            },
+            '&:hover fieldset': {
+                color:Theme["FOURTH_COLOR"],
+                borderColor: Theme["FOURTH_COLOR"], // - Set the Input border when parent has :hover
+            },
+            '&.Mui-focused fieldset': { // - Set the Input border when parent is focused 
+                color:Theme["FOURTH_COLOR"],
+                borderColor: Theme["FOURTH_COLOR"],
+            },
+        }, }}
+					>
 					{
 						Categories.map(item => (<MenuItem key={item} value={item}>{item}</MenuItem>))
 					}
-    		</Select>
+    		</TextField>
 				</Box>
     		</Box>
 
