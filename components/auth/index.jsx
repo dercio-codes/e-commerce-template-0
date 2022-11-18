@@ -127,7 +127,7 @@ export default function Auth() {
     		 }}>
     		 <Grid container>
     		 	<Grid item xs={12} sx={{ minHeight:"45vh" , background:'rgba(255,255,255,.7)' , padding:'12px 21px' }}>
-    		<Typography sx={{ fontSize:'21px' , color:Theme["FOURTH_COLOR"] , padding:'0 0' , fontWeight:'600' }}> Don't have a account? </Typography>
+    		<Typography sx={{ fontSize:'21px' , color:Theme["FOURTH_COLOR"] , padding:'0 0' , fontWeight:'600' }}> {"Don't have a account?"} </Typography>
     		<Typography sx={{ fontSize:'21px' , color:Theme["FOURTH_COLOR"] , padding:'0 0' , fontWeight:'600',margin:'12px 0' }}> Sign In </Typography>
     		 	<img src="https://cdn-icons-png.flaticon.com/512/2170/2170153.png" alt="" style={{ width:'100%', margin:'0 auto ',height:"150px" , objectFit:'contain' }} />
                 <Button onClick={googleHandler} sx={{ width:'100%' , padding:'12px 21px' , background:'#F4B400' ,"&:hover":{ color:'#F4B400' }, margin:'12px 0' , color:'#eee' , fontWeight:'600' }}>Continue with Google</Button>
