@@ -17,7 +17,7 @@ a {
 }
 .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input{
   border: 2px solid white;
-  color: white;
+  /*color: white;*/
 }
 @media (prefers-color-scheme: light) {
   html {
@@ -107,7 +107,7 @@ body, html {
 .grid-item1 {
   /*background-image*/: url("https://images.unsplash.com/photo-1534719156993-f3c9448673bf?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=f089cfa06eb1cd7c0f654b39d8fdfd07&auto=format&fit=crop&w=1350&q=80");
   background-size: cover;
-  background-position: center;
+  background-position: top ;
   grid-column: 1/4;
   grid-row: 1/2;
 }

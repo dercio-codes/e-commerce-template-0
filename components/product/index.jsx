@@ -1,19 +1,26 @@
 import * as React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
+import { storage , db } from "./../../firebase/firebaseConfig";
 import Typography from '@mui/material/Typography';
 import { Box , OutlinedInput  , Button , Select , MenuItem , Grid ,Paper , TextField } from '@mui/material';
 import * as Theme from "../../constants"
 import ProductItem from "./product-item"
 import AddIcon from '@mui/icons-material/Add';
-export default function Product(props) {
+import { query, collection, doc,setDoc , addDoc , getDocs, where } from "firebase/firestore";
+import { User } from "../../pages/_app"
 
+export default function Product(props) {
+	const { user ,setUser} = React.useContext(User);
+
+	const [ products , setProducts] = React.useState([]);
+	const [ cart , setCart] = React.useState([]);
 	const images = [
-		"https://media.dior.com/img/en_int/sku/couture/193M638AT393_C084_TXXS?imwidth=460",
-		"https://media.dior.com/img/en_int/sku/couture/943J605A0554_C080_TXXS?imwidth=460",
-		"https://media.dior.com/img/en_int/sku/couture/313C507A5656_C070_T64?imwidth=460",
-		"https://media.dior.com/img/en_int/sku/couture/113J692A0614_C585_TXXS?imwidth=460",
-		"https://media.dior.com/img/en_int/sku/couture/313M235AT521_C486_TXXS?imwidth=460"
+	"https://media.dior.com/img/en_int/sku/couture/193M638AT393_C084_TXXS?imwidth=460",
+	"https://media.dior.com/img/en_int/sku/couture/943J605A0554_C080_TXXS?imwidth=460",
+	"https://media.dior.com/img/en_int/sku/couture/313C507A5656_C070_T64?imwidth=460",
+	"https://media.dior.com/img/en_int/sku/couture/113J692A0614_C585_TXXS?imwidth=460",
+	"https://media.dior.com/img/en_int/sku/couture/313M235AT521_C486_TXXS?imwidth=460"
 	]
 
 	const Categories = [
@@ -24,97 +31,150 @@ export default function Product(props) {
 	"Bucket Hats",
 	]
 
-		const SortBy = [
-		"Latest ( Ascending )",
-		"Latest ( Descening )",
-		"Time",
+	const SortBy = [
+	"Latest ( Ascending )",
+	"Latest ( Descening )",
+	"Time",
 	]
 
-  return (
-    <Box sx={{ 	
-    		width: '100%' , 
-    		padding:{
-    			xs:'0.5rem',
-    			md:'2.5rem',
-    		},
-    		zIndex:10,
-    		minHeight:'50vh',
-    		display:'flex',
+		// const existsInCart = cart.map((item)=>{
+		// 	if(product.Title === item.Title){
+		// 		setCart([...cart,item])
+		// 	}
+		// })
+		// if(existsInCart.includes(true)){
+		// 	setCart([...cart , { ...localNewProduct, Quantity:localNewProduct.Quantity + 1 } ])
+		// }
+
+	const handleAddToCart = async (product) => {
+		const localNewProduct = {...product , Quantity:1}
+		try {
+	    	const productData = Object.keys(localNewProduct)
+	    	if(productData.includes("")){
+	    	    alert("Please fill in fields")
+	    	}else{
+	    	   await setDoc(doc(db, "orders", `${new Date().getTime() + localNewProduct.Title.replace(/\s/g, '')} `), {
+                                ...localNewProduct,
+                                userID:user.uid
+                });
+	    	}
+  		} catch (err) {
+  		  console.error(err);
+  		  alert(err.message);
+  		}
+		// try{
+ 	// 	await setDoc(collection(db, "orders"), {
+ 	// 	       ...localNewProduct,
+ 	// 			// userEmail:user.email,
+ 	// 	     });
+ 	// 	   // }
+		// }catch(err){
+		// 	console.log(err)
+
+		// }
+    }
+	
+	console.log(cart)
+
+	const getProducts = async () => {
+		const local = []
+		const querySnapshot = await getDocs(collection(db, "products"));
+
+		querySnapshot.forEach((item)=>{
+			local.push(item.data())
+		})
+		console.log(local)
+		setProducts(local)
+	}
+
+	React.useEffect(()=>{
+		getProducts()
+	},[])
+	return (
+		<Box sx={{ 	
+			width: '100%' , 
+			padding:{
+				xs:'0.5rem',
+				md:'2.5rem',
+			},
+			zIndex:10,
+			minHeight:'50vh',
+			display:'flex',
     		// background:'red',
     		alignItems:"center",
     		flexDirection:'column',
     		justifyContent:'center'
-    		 }}>
+    	}}>
 
-    		<Typography sx={{ fontSize:{xs:'24px' , md:'36px'} , color:'' , padding:'34px 21px' , fontWeight:'600' }}> {props.sectionTitle} </Typography>
+    	<Typography sx={{ fontSize:{xs:'24px' , md:'36px'} , color:'' , padding:'34px 21px' , fontWeight:'600' }}> {props.sectionTitle} </Typography>
 
-    		<Box sx={{ display:props.hidden ? 'none' : 'flex' , justifyContent:'space-between' , alignItems:'center', padding:'34px 0', width:'100%' , background:'' }}>
+    	<Box sx={{ display:props.hidden ? 'none' : 'flex' , justifyContent:'space-between' , alignItems:'center', padding:'34px 0', width:'100%' , background:'' }}>
 
-				<Box sx={{ display:'flex' , alignItems:'center' , width:{xs:'50%'} }}>
+    	<Box sx={{ display:'flex' , alignItems:'center' , width:{xs:'50%'} }}>
 
-								<TextField  select label={"Sort By :"}
+    	<TextField  select label={"Sort By :"}
 					sx={{ height:{xs:'fit-content', md:'auto'},minWidth:{xs:'120px' , md:'250px'} ,maxWidth:'80%', color:'#111' , padding:'0' ,  '& .MuiOutlinedInput-root': {  // - The Input-root, inside the TextField-root
             '& fieldset': {            // - The <fieldset> inside the Input-root
-                color:Theme["FOURTH_COLOR"],
+            	color:Theme["FOURTH_COLOR"],
                 borderColor: '#999',   // - Set the Input border
             },
             '&:hover fieldset': {
-                color:Theme["FOURTH_COLOR"],
+            	color:Theme["FOURTH_COLOR"],
                 borderColor: Theme["FOURTH_COLOR"], // - Set the Input border when parent has :hover
             },
             '&.Mui-focused fieldset': { // - Set the Input border when parent is focused 
-                color:Theme["FOURTH_COLOR"],
-                borderColor: Theme["FOURTH_COLOR"],
+            	color:Theme["FOURTH_COLOR"],
+            	borderColor: Theme["FOURTH_COLOR"],
             },
         },}}
-					>{
-						SortBy.map(item => (<MenuItem key={item} value={item}>{item}</MenuItem>))
-					}
-    		</TextField>
-				</Box>
+        >{
+        	SortBy.map(item => (<MenuItem key={item} value={item}>{item}</MenuItem>))
+        }
+        </TextField>
+        </Box>
 
 
-				<Box sx={{ display:'flex' , justifyContent:'flex-end' , background:'' , width:{xs:'50%'} }}>
+        <Box sx={{ display:'flex' , justifyContent:'flex-end' , background:'' , width:{xs:'50%'} }}>
 
-				<TextField  select label={"Filter By :"}
+        <TextField  select label={"Filter By :"}
 					sx={{ height:{xs:'fit-content', md:'auto'},minWidth:{xs:'120px' , md:'250px'} ,maxWidth:'80%', color:'#111' , padding:'0' ,  '& .MuiOutlinedInput-root': {  // - The Input-root, inside the TextField-root
             '& fieldset': {            // - The <fieldset> inside the Input-root
-                color:Theme["FOURTH_COLOR"],
+            	color:Theme["FOURTH_COLOR"],
                 borderColor: '#999',   // - Set the Input border
             },
             '&:hover fieldset': {
-                color:Theme["FOURTH_COLOR"],
+            	color:Theme["FOURTH_COLOR"],
                 borderColor: Theme["FOURTH_COLOR"], // - Set the Input border when parent has :hover
             },
             '&.Mui-focused fieldset': { // - Set the Input border when parent is focused 
-                color:Theme["FOURTH_COLOR"],
-                borderColor: Theme["FOURTH_COLOR"],
+            	color:Theme["FOURTH_COLOR"],
+            	borderColor: Theme["FOURTH_COLOR"],
             },
         }, }}
-					>
-					{
-						Categories.map(item => (<MenuItem key={item} value={item}>{item}</MenuItem>))
-					}
-    		</TextField>
-				</Box>
-    		</Box>
+        >
+        {
+        	Categories.map(item => (<MenuItem key={item} value={item}>{item}</MenuItem>))
+        }
+        </TextField>
+        </Box>
+        </Box>
 
-    		 <Grid container spacing={0}>
-    		 {
-    		 	images.map((item,index)=>(
-    		 <Grid key={item} item xs={6} md={4} lg={2.4}>
-				<ProductItem color={index % 2 === 0 ? 'rgba(255,0,0,.8)' : 'rgba(0,200,0,.8)'} special={index % 2 === 0 ? 'Hot In' : 'Sale'} image={item}/>
-    		 </Grid>
-    		 		))
-    		 }
+        <Grid container spacing={0}>
+        {
+        	products.map((item,index)=>(
+        		<Grid key={item+index} item xs={6} md={4} lg={2.4}>
+        		<ProductItem handleAddToCart={handleAddToCart} product={item} color={index % 2 === 0 ? 'rgba(255,0,0,.8)' : 'rgba(0,200,0,.8)'} special={index % 2 === 0 ? 'Hot In' : 'Sale'} image={item.Image} Title={item.Title} Price={item.Price}  />
+        		</Grid>
+        		))
+        }
 
-    		  <Grid item xs={6} md={4} lg={2.4} sx={{ display:{lg:'none' , xs:'flex'} , justifyContent:'center' , background:'rgba()' , alignItems:'center' }}>
-				<Paper sx={{ width:'100%' , height:'100%' , display:'flex' , alignItems:'center', justifyContent:'center' , flexDirection:'column' , background:'transparent' , opacity:'0.5' , "&:hover":{ opacity:'1' } ,   }} elevation={0}> 
-<AddIcon sx={{ fontSize:'84px' }}  />
-View More
-				 </Paper>
-    		 </Grid>
-    		 </Grid>
-    </Box>
-  );
+        <Grid item xs={6} md={4} lg={2.4} sx={{ display:{lg:'none' , xs:'flex'} , justifyContent:'center' , background:'rgba()' , alignItems:'center' }}>
+        <Paper sx={{ width:'100%' , height:'100%' , display:'flex' , alignItems:'center', justifyContent:'center' , flexDirection:'column' , background:'transparent' , opacity:'0.5' , "&:hover":{ opacity:'1' } ,   }} elevation={0}> 
+        <AddIcon sx={{ fontSize:'84px' }}  />
+        View More
+        </Paper>
+        </Grid>
+        </Grid>
+        </Box>
+        );
 }

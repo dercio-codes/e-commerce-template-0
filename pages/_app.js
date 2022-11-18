@@ -1,4 +1,5 @@
 import '../styles/globals.css'
+import Auth from "../components/auth"
 import dynamic from 'next/dynamic'
 import { createContext , useContext  , useState} from "react"
 const AnimatedCursor = dynamic(() => import('react-animated-cursor'), {
@@ -6,10 +7,29 @@ const AnimatedCursor = dynamic(() => import('react-animated-cursor'), {
 });
 
 export const DisplayLoader = createContext(false);
+export const User = createContext({
+  uid:"",
+  name:"",
+  surname:"",
+  profilePicture:"",
+  email:"",
+  orders:[],
+  wishlist:[],
+});
 function MyApp({ Component, pageProps }) {
   const [ loading , setLoading ] = useState(false)
+  const [ user , setUser ] = useState({
+  uid:"",
+  name:"",
+  surname:"",
+  profilePicture:"",
+  email:"",
+  orders:[],
+  wishlist:[],
+})
 
   return(
+    <User.Provider value={{ user , setUser }}>
 <DisplayLoader.Provider value={{ loading , setLoading }}>
   <AnimatedCursor innerSize={24}
       outerSize={48}
@@ -34,9 +54,14 @@ function MyApp({ Component, pageProps }) {
        { loading ? ( 
                  <div>Laindg</div>
            ) : (
+           <>
           <Component {...pageProps } />
+           <Auth />
+           </>
            )}
+
 </DisplayLoader.Provider>
+    </User.Provider>
     )
 
 }

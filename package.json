@@ -14,12 +14,15 @@
     "@fontsource/roboto": "^4.5.8",
     "@mui/icons-material": "^5.10.9",
     "@mui/material": "^5.10.13",
+    "@mui/x-data-grid": "^5.17.11",
     "eslint": "8.27.0",
     "eslint-config-next": "13.0.3",
+    "firebase": "^9.14.0",
     "next": "13.0.3",
     "react": "18.2.0",
     "react-animated-cursor": "^2.5.2",
     "react-dom": "18.2.0",
+    "react-firebaseui": "^6.0.0",
     "react-special-cursor": "^1.2.1"
   }
 }

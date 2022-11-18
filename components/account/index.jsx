@@ -5,14 +5,21 @@ import Typography from '@mui/material/Typography';
 import { Box , Avatar , Paper , Button , Grid , TextField } from '@mui/material';
 import * as Theme from "../../constants"
 import FavoriteIcon from '@mui/icons-material/Favorite';
-export default function AccountComponent() {
+import { query, collection,setDoc,updateDoc, addDoc , deleteDoc , doc , getDocs, where } from "firebase/firestore";
+import { storage , db } from "./../../firebase/firebaseConfig";
+import { User } from "../../pages/_app"
 
-const [ selected , setSelected ] = React.useState("Orders")
+
+export default function AccountComponent() {
+	const [ products ,setProducts] = React.useState([]);
+    const { user ,setUser} = React.useContext(User);
+
+const [ selected , setSelected ] = React.useState("Cart")
 	const tabs = [
-		"Orders",
+		"Cart",
 		"Settings",
 		"Wishlist",
-		"Cart"
+		"Orders"
 	]
 
 	const images = [
@@ -22,6 +29,62 @@ const [ selected , setSelected ] = React.useState("Orders")
 		"https://media.dior.com/img/en_int/sku/couture/113J692A0614_C585_TXXS?imwidth=460",
 		"https://media.dior.com/img/en_int/sku/couture/313M235AT521_C486_TXXS?imwidth=460"
 	]
+
+// 	const deleteProduct = db.collection('products').where("Title", "==", product.Title);
+// 	deleteProduct.get().then(function(querySnapshot) {
+//   	querySnapshot.forEach(function(doc) {
+//     	doc.ref.delete();
+//   });
+// });
+
+	const deleteProduct = async (product)=>{
+		const querySnapshot = await getDocs(collection(db, "orders"));
+	
+	    querySnapshot.forEach(async(item)=>{
+	    	console.log(item.data())
+	    	if(item.data().Title === product.Title){
+	    		console.log("Found it")
+	    		 await setDoc(doc(db, "orders", item.id), {
+	                                ...product,
+	                                userID:""
+	                });
+	    	}
+	    })
+    }
+
+	React.useEffect(()=>{
+		getProducts()
+	},[user])
+    	const getProducts = async () => {
+		if(user.uid !== ""){
+			const local = []
+		  const querySnapshot = await getDocs(collection(db, "orders"));
+
+    querySnapshot.forEach((item)=>{
+    	console.log(item.data())
+    	if(item.data().userID === user.uid){
+    		local.push({...item.data() , id:new Date().getTime()})
+    	}
+    })
+console.log(local)
+setProducts(local)
+}else{
+	alert("User not logged in.")
+	}
+}
+
+// const deleteProduct = async (product) => {
+// 	  try {
+//     const q = query(collection(db, "products"), where("Title", "==", product.Title));
+//     const docs = await getDocs(q);
+//      docs.forEach(function(doc) {
+//     doc.ref.delete();
+//   });
+//   } catch (err) {
+//     console.error(err);
+//     alert(err.message);
+//   }
+// }
 
   return (
     <Box sx={{ 	
@@ -65,26 +128,26 @@ const [ selected , setSelected ] = React.useState("Orders")
     		flexDirection:'column',
     		  }}>
     		<Typography sx={{ fontSize:'32px' , color:Theme["FOURTH_COLOR"] , padding:'0 0' , fontWeight:'600' }}> {selected} </Typography>
-			<Box sx={{ width:'100%' , padding:' 0' , background:'' , display:selected === "Orders" ? 'flex' : "none",
+			<Box sx={{ width:'100%' , padding:' 0' , background:'' , display:selected === "Cart" ? 'flex' : "none",
     		justifyContent:'space-between',
     		background:'',
     		alignItems:"center",
     		flexWrap:'wrap', }} >
 
     		{
-    			images.map((item , index)=>{
+    			products.map((item , index)=>{
     				return(
-    		<Paper key={item} sx={{ width:{ xs:'100%',  md:'45%'}, display:'flex', flexDirection:{xs:'column' , md:''}, minHeight:'120px' , padding:'8px', margin:'24px 0',background:'transparent' }} >
-    			<Box sx={{ width:{xs:'100%' , md:'100%'} , height:{xs:'350px'} , backgroundImage:`url(${item})` , backgroundSize:'contain' , backgroundPosition:'center' , backgroundRepeat:'no-repeat' }} />
+    		<Paper key={item} sx={{ width:{ xs:'100%',  md:'100%'}, display:'flex', flexDirection:{xs:'column' , md:'row'}, alignItems:'center' , minHeight:'120px' , padding:'8px', margin:'24px 0',background:'transparent' }} >
+    			<Box sx={{ width:{xs:'40%' , lg:'40%'} , height:{xs:'350px'} , backgroundImage:`url(${item.Image})` , backgroundSize:'contain' , backgroundPosition:'center' , backgroundRepeat:'no-repeat' }} />
     			<Box sx={{ padding:'12px' , width:'65%' }}>
-    		<Typography sx={{ fontSize:'21px' , color:Theme["FOURTH_COLOR"] , padding:'1px 0' , fontWeight:'600' }}> Sunday Blom Butcket Hat </Typography>
+    		<Typography sx={{ fontSize:'21px' , color:Theme["FOURTH_COLOR"] , padding:'1px 0' , fontWeight:'600' }}> {item.Title} </Typography>
     		<Typography sx={{ fontSize:'18px' , color:Theme["FOURTH_COLOR"] , padding:'1px 0' , fontWeight:'600' }}> Qty : <span style={{fontWeight:100}}>2</span> </Typography>
-    		<Typography sx={{ fontSize:'18px' , color:Theme["FOURTH_COLOR"] , padding:'1px 0' , fontWeight:'600' }}>Total: <span style={{fontWeight:100}}> R600</span>  </Typography>
+    		<Typography sx={{ fontSize:'18px' , color:Theme["FOURTH_COLOR"] , padding:'1px 0' , fontWeight:'600' }}>Total: <span style={{fontWeight:100}}> {item.Price}</span>  </Typography>
     		<Typography sx={{ fontSize:'18px' , color:Theme["FOURTH_COLOR"] , padding:'1px 0' , fontWeight:'600' }}>Status: <span style={{fontWeight:100}}> { index % 2 === 0 ? "Cancelled" : "Delivery Enroute"}</span>  </Typography>
 
     			</Box>
-    			<Box sx={{ padding:'12px' , width:{xs:'100%'} }}>
-    		<Button sx={{ background:Theme["FOURTH_COLOR"],padding:'16px 21px' , margin:'0px' ,color:'#eee', width:'100%', height:'95px' , fontWeight:600 , "&:hover":{color:Theme["FOURTH_COLOR"]} }}>Cancel Order</Button>
+    			<Box sx={{ padding:'12px' , width:{xs:'40%'} }}>
+    		<Button onClick={() => deleteProduct(item)} sx={{ background:Theme["FOURTH_COLOR"],padding:'16px 21px' , margin:'0px' ,color:'#eee', width:'100%', height:'95px' , fontWeight:600 , "&:hover":{color:Theme["FOURTH_COLOR"]} }}>Cancel Order</Button>
     		
     			</Box>
     		</Paper>
@@ -97,7 +160,7 @@ const [ selected , setSelected ] = React.useState("Orders")
 </Box>
 
 <Box sx={{ width:'100%'  , display:'flex' , flexDirection:{ xs:'column' , lg:'row'} , justifyContent:'space-between' }}>
-<Box sx={{ width:{ xs:'100%', lg:'40%'} , padding:' 0' , background:'' , display:selected === "Cart" ? 'flex' : "none",
+<Box sx={{ width:{ xs:'100%', lg:'40%'} , padding:' 0' , background:'' , display:selected === "Orders" ? 'flex' : "none",
     		justifyContent:'space-between',
     		// background:'',
     		// alignItems:"center",
