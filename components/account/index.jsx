@@ -110,7 +110,7 @@ export default function AccountComponent() {
     >
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <Avatar
-          src=""
+          src={user.photoURL ? user.photoURL : ""}
           sx={{
             width: { xs: "60px", md: "120px" },
             height: { xs: "60px", md: "120px" },
@@ -126,7 +126,7 @@ export default function AccountComponent() {
           }}
         >
           {" "}
-          John Doe.{" "}
+          {user.displayName ? user.displayName : "John Doe"}
         </Typography>
       </Box>
 
