@@ -4,6 +4,7 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import { Box, Avatar, Paper, Button, Grid, TextField } from "@mui/material";
 import * as Theme from "../../constants";
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import {
   query,
@@ -24,7 +25,7 @@ export default function AccountComponent() {
   const { user, setUser } = React.useContext(User);
 
   const [selected, setSelected] = React.useState("Cart");
-  const tabs = ["Cart", "Settings", "Wishlist", "Orders"];
+  const tabs = ["Cart", "Wishlist", "Orders"];
 
   const images = [
     "https://media.dior.com/img/en_int/sku/couture/193M638AT393_C084_TXXS?imwidth=460",
@@ -45,9 +46,7 @@ export default function AccountComponent() {
     const querySnapshot = await getDocs(collection(db, "orders"));
 
     querySnapshot.forEach(async (item) => {
-      console.log(item.data());
       if (item.data().Title === product.Title) {
-        console.log("Found it");
         await setDoc(doc(db, "orders", item.id), {
           ...product,
           userID: "",
@@ -58,22 +57,39 @@ export default function AccountComponent() {
 
   React.useEffect(() => {
     getProducts();
-  }, [user]);
+    initLists()
+  }, [user.email , user.uid]);
+
+const initLists = async () => {
+    if (user.email !== "") {
+      let userLists = {};
+      const querySnapshot = await getDocs(collection(db, "users"));
+
+      querySnapshot.forEach((item) => {
+        if (item.data().email === user.email) {
+          userLists = { ...item.data()};
+        }
+      });
+
+      setUser({...user , userLists});
+    } else {
+      // alert("User not logged in.");
+    }
+  };
+
   const getProducts = async () => {
     if (user.uid !== "") {
       const local = [];
       const querySnapshot = await getDocs(collection(db, "orders"));
 
       querySnapshot.forEach((item) => {
-        console.log(item.data());
         if (item.data().userID === user.uid) {
           local.push({ ...item.data(), id: new Date().getTime() });
         }
       });
-      console.log(local);
       setProducts(local);
     } else {
-      alert("User not logged in.");
+      // alert("User not logged in.");
     }
   };
 
@@ -85,7 +101,6 @@ export default function AccountComponent() {
   //     doc.ref.delete();
   //   });
   //   } catch (err) {
-  //     console.error(err);
   //     alert(err.message);
   //   }
   // }
@@ -102,7 +117,7 @@ export default function AccountComponent() {
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
+        // justifyContent: "center",
         zIndex: "9",
         // background:'red'
         // borderBottom:'1px solid red'
@@ -195,32 +210,32 @@ export default function AccountComponent() {
 				  flexWrap: "wrap",
 				}}
 			  >
-				{products.map((item, index) => {
+				{user.cart && user.cart.map((item, index) => {
 				  return (
 					<Paper
 					  key={item}
 					  sx={{
 						width: { xs: "100%", md: "100%" },
 						display: "flex",
-						flexDirection: { xs: "column", md: "row" },
+						flexDirection: { xs: "", md: "row" },
 						alignItems: "center",
 						minHeight: "120px",
-						padding: "8px",
+						padding: "12px 8px",
 						margin: "24px 0",
 						background: "transparent",
 					  }}
 					>
 					  <Box
 						sx={{
-						  width: { xs: "40%", lg: "40%" },
-						  height: { xs: "350px" },
+						  width: { xs: "150px", lg: "150px" },
+						  height: { xs: "150px" },
 						  backgroundImage: `url(${item.Image})`,
 						  backgroundSize: "contain",
 						  backgroundPosition: "center",
 						  backgroundRepeat: "no-repeat",
 						}}
 					  />
-					  <Box sx={{ padding: "12px", width: "65%" }}>
+					  <Box sx={{ padding: "12px", flexGrow:1 , background:'', }}>
 						<Typography
 						  sx={{
 							fontSize: "21px",
@@ -241,7 +256,7 @@ export default function AccountComponent() {
 						  }}
 						>
 						  {" "}
-						  Qty : <span style={{ fontWeight: 100 }}>2</span>{" "}
+						  Qty : <span style={{ fontWeight: 100 }}>{item.Quantity}</span>{" "}
 						</Typography>
 						<Typography
 						  sx={{
@@ -252,38 +267,25 @@ export default function AccountComponent() {
 						  }}
 						>
 						  Total:{" "}
-						  <span style={{ fontWeight: 100 }}> {item.Price}</span>{" "}
+						  <span style={{ fontWeight: 100 }}> {`R${Number(item.Price)}`}</span>{" "}
 						</Typography>
-						<Typography
-						  sx={{
-							fontSize: "18px",
-							color: Theme["FOURTH_COLOR"],
-							padding: "1px 0",
-							fontWeight: "600",
-						  }}
-						>
-						  Status:{" "}
-						  <span style={{ fontWeight: 100 }}>
-							{" "}
-							{index % 2 === 0 ? "Cancelled" : "Delivery Enroute"}
-						  </span>{" "}
-						</Typography>
+						
 					  </Box>
-					  <Box sx={{ padding: "12px", width: { xs: "40%" } }}>
+					  <Box sx={{ padding: "12px", }}>
 						<Button
 						  onClick={() => deleteProduct(item)}
 						  sx={{
-							background: Theme["FOURTH_COLOR"],
+							color: Theme["FOURTH_COLOR"],
 							padding: "16px 21px",
 							margin: "0px",
-							color: "#eee",
+							background: "#eee",
 							width: "100%",
 							height: "95px",
 							fontWeight: 600,
-							"&:hover": { color: Theme["FOURTH_COLOR"] },
+							"&:hover": { background: Theme["FOURTH_COLOR"]  , color:'#eee'},
 						  }}
 						>
-						  Cancel Order
+						  <RemoveCircleOutlineIcon/>
 						</Button>
 					  </Box>
 					</Paper>
@@ -314,7 +316,7 @@ export default function AccountComponent() {
               flexWrap: "wrap",
             }}
           >
-            {images.map((item, index) => {
+            {user.Orders &&  user.Orders.map((item, index) => {
               return (
                 <Paper
                   key={item}
@@ -397,7 +399,7 @@ export default function AccountComponent() {
               width: { xs: "100%", lg: "55%" },
               padding: " 0",
               background: "rgba(1,1,1,.7)",
-              display: selected === "Cart" ? "flex" : "none",
+              display: selected === "Cart" ? user.Cart && user.Cart.length === 0 ? "none" : "flex" : "none",
 
               flexWrap: "wrap",
             }}
@@ -488,7 +490,7 @@ export default function AccountComponent() {
         }}
       >
         <Grid container spacing={0}>
-          {images.map((item, index) => (
+          {user.Wishlist && user.Wishlist.map((item, index) => (
             <Grid key={item} item xs={6} md={4} lg={2.4}>
               <Paper
                 elevation={0}

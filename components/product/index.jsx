@@ -9,12 +9,15 @@ import ProductItem from "./product-item"
 import AddIcon from '@mui/icons-material/Add';
 import { query, collection, doc,setDoc , addDoc , getDocs, where } from "firebase/firestore";
 import { User } from "../../pages/_app"
+import { toast } from 'react-toastify';
 
 export default function Product(props) {
 	const { user ,setUser} = React.useContext(User);
 
 	const [ products , setProducts] = React.useState([]);
 	const [ cart , setCart] = React.useState([]);
+	const [ filterBy , setFilterBy] = React.useState("None");
+	const [ sortBy , setSortBy] = React.useState("");
 	const images = [
 	"https://media.dior.com/img/en_int/sku/couture/193M638AT393_C084_TXXS?imwidth=460",
 	"https://media.dior.com/img/en_int/sku/couture/943J605A0554_C080_TXXS?imwidth=460",
@@ -23,13 +26,18 @@ export default function Product(props) {
 	"https://media.dior.com/img/en_int/sku/couture/313M235AT521_C486_TXXS?imwidth=460"
 	]
 
-	const Categories = [
-	"Hoodies",
-	"Shorts",
-	"Beanies",
-	"T-Shirts",
-	"Bucket Hats",
-	]
+   const Categories = [
+        "None",
+        "T-Shirts",
+        "Shirts",
+        "Caps",
+        "Beanies",
+        "Bucket Hats",
+        "Jackets",
+        "Socks",
+        "Pants",
+        "Shorts",
+    ]
 
 	const SortBy = [
 	"Latest ( Ascending )",
@@ -47,34 +55,66 @@ export default function Product(props) {
 		// }
 
 	const handleAddToCart = async (product) => {
-		const localNewProduct = {...product , Quantity:1}
+		let localNewProduct = {...product ,  }
+		// console.log("before transforatiom" , localNewProduct)
+		let localUser = { ...user  }
+		let productExists = [] 
+		if(user.cart.length === 0){
+				localUser = {
+	    			...user ,
+	    		    cart:[...user.cart , localNewProduct],
+        	        }
+		}else{
+			user.cart.map((item , index)=>{
+				if(item.id === product.id){
+					// console.log(item)
+					// console.log(product)
+					localNewProduct = {...product , Quantity:Number(item.Quantity + product.Quantity) }
+					localUser.cart[index] = localNewProduct
+				}else{
+					localNewProduct = {...product }
+					localUser = {
+	    				...user ,
+	    			    cart:[...user.cart , localNewProduct],
+        	        }
+				}
+			})
+
+		}
+		delete localNewProduct["Colors"]
+		delete localNewProduct["HotIn"]
+
+		// console.log(localNewProduct)
 		try {
 	    	const productData = Object.keys(localNewProduct)
 	    	if(productData.includes("")){
-	    	    alert("Please fill in fields")
+	    	            toast.warning('Please fill in all fields!!!', {
+            position: toast.POSITION.TOP_RIGHT
+        });
 	    	}else{
-	    	   await setDoc(doc(db, "orders", `${new Date().getTime() + localNewProduct.Title.replace(/\s/g, '')} `), {
-                                ...localNewProduct,
-                                userID:user.uid
+	    		console.log("This is what we will be posting bruh" , localUser)
+	    		setUser({
+	    			...localUser,
+                })
+	    	            await setDoc(doc(db, "users" , user.email), {
+                                uid : user.uid,
+                                email : user.email,
+                                cart:[...localUser.cart],
+                                // wishlist:[...user.wishlist],
+                                // orders:[...user.orders],
                 });
+	    	                    toast.success('Added item to cart', {
+            position: toast.POSITION.TOP_RIGHT
+        });
 	    	}
   		} catch (err) {
   		  console.error(err);
-  		  alert(err.message);
+  		          toast.error(err.message, {
+            position: toast.POSITION.TOP_RIGHT
+        });
   		}
-		// try{
- 	// 	await setDoc(collection(db, "orders"), {
- 	// 	       ...localNewProduct,
- 	// 			// userEmail:user.email,
- 	// 	     });
- 	// 	   // }
-		// }catch(err){
-		// 	console.log(err)
-
-		// }
     }
 	
-	console.log(cart)
 
 	const getProducts = async () => {
 		const local = []
@@ -90,6 +130,7 @@ export default function Product(props) {
 	React.useEffect(()=>{
 		getProducts()
 	},[])
+
 	return (
 		<Box sx={{ 	
 			width: '100%' , 
@@ -112,7 +153,7 @@ export default function Product(props) {
 
     	<Box sx={{ display:'flex' , alignItems:'center' , width:{xs:'50%'} }}>
 
-    	<TextField  select label={"Sort By :"}
+    	<TextField value={sortBy} select label={"Sort By :"}
 					sx={{ height:{xs:'fit-content', md:'auto'},minWidth:{xs:'120px' , md:'250px'} ,maxWidth:'80%', color:'#111' , padding:'0' ,  '& .MuiOutlinedInput-root': {  // - The Input-root, inside the TextField-root
             '& fieldset': {            // - The <fieldset> inside the Input-root
             	color:Theme["FOURTH_COLOR"],
@@ -128,7 +169,7 @@ export default function Product(props) {
             },
         },}}
         >{
-        	SortBy.map(item => (<MenuItem key={item} value={item}>{item}</MenuItem>))
+        	SortBy.map(item => (<MenuItem onClick={()=> setSortBy(item) } key={item} value={item}>{item}</MenuItem>))
         }
         </TextField>
         </Box>
@@ -136,7 +177,7 @@ export default function Product(props) {
 
         <Box sx={{ display:'flex' , justifyContent:'flex-end' , background:'' , width:{xs:'50%'} }}>
 
-        <TextField  select label={"Filter By :"}
+        <TextField value={filterBy} select label={"Filter By :"}
 					sx={{ height:{xs:'fit-content', md:'auto'},minWidth:{xs:'120px' , md:'250px'} ,maxWidth:'80%', color:'#111' , padding:'0' ,  '& .MuiOutlinedInput-root': {  // - The Input-root, inside the TextField-root
             '& fieldset': {            // - The <fieldset> inside the Input-root
             	color:Theme["FOURTH_COLOR"],
@@ -153,7 +194,7 @@ export default function Product(props) {
         }, }}
         >
         {
-        	Categories.map(item => (<MenuItem key={item} value={item}>{item}</MenuItem>))
+        	Categories.map(item => (<MenuItem key={item} onClick={()=> setFilterBy(item) } value={item}>{item}</MenuItem>))
         }
         </TextField>
         </Box>
@@ -161,11 +202,27 @@ export default function Product(props) {
 
         <Grid container spacing={0}>
         {
-        	products.map((item,index)=>(
-        		<Grid key={item+index} item xs={6} md={4} lg={2.4}>
-        		<ProductItem handleAddToCart={handleAddToCart} product={item} color={index % 2 === 0 ? 'rgba(255,0,0,.8)' : 'rgba(0,200,0,.8)'} special={index % 2 === 0 ? 'Hot In' : 'Sale'} image={item.Image} Title={item.Title} Price={item.Price}  />
-        		</Grid>
-        		))
+        	products.map((item,index)=>{
+        		if(filterBy === "None"){
+return(
+        	        		<Grid key={item+index} item xs={6} md={4} lg={2.4}>
+        	        		<ProductItem products={products} handleAddToCart={handleAddToCart} product={item} color={index % 2 === 0 ? 'rgba(255,0,0,.8)' : 'rgba(0,200,0,.8)'} special={index % 2 === 0 ? 'Hot In' : 'Sale'} image={item.Image} Title={item.Title} Price={item.Price}  />
+        	        		</Grid>
+        	        		)
+        		}else{
+        			if(item.Categories.includes(filterBy)){
+        			return(
+        	        		<Grid key={item+index} item xs={6} md={4} lg={2.4}>
+        	        		<ProductItem products={products} handleAddToCart={handleAddToCart} product={item} color={index % 2 === 0 ? 'rgba(255,0,0,.8)' : 'rgba(0,200,0,.8)'} special={index % 2 === 0 ? 'Hot In' : 'Sale'} image={item.Image} Title={item.Title} Price={item.Price}  />
+        	        		</Grid>
+        	        		)
+        		}else{
+        			<Box sx={{  height:'100vh' , background:'rgba(1,1,1,.7)'  }} >
+Nothing matches {filterBy}
+        			</Box>
+        		}
+        		}
+        	})
         }
 
         <Grid item xs={6} md={4} lg={2.4} sx={{ display:{lg:'none' , xs:'flex'} , justifyContent:'center' , background:'rgba()' , alignItems:'center' }}>

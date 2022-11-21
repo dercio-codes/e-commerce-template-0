@@ -1,7 +1,7 @@
 import { useState , useEffect } from "react";
 import { storage , db } from "./../../firebase/firebaseConfig";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { Box , Grid } from '@mui/material';
+import { Box , LinearProgress , Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { Button , CircularProgress ,Select ,Drawer ,OutlinedInput ,MenuItem,TextField } from '@mui/material';
 import InstagramIcon from '@mui/icons-material/Instagram';
@@ -9,7 +9,8 @@ import Link from "next/link"
 import * as Theme from "../../constants"
 import { query, doc ,  collection, addDoc , setDoc, getDocs, where } from "firebase/firestore";
 import { User } from "../../pages/_app"
-
+import SpeedDial from '@mui/material/SpeedDial';
+import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 
 import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
@@ -61,7 +62,7 @@ const rows = [
 
 function DataTable({products}) {
   return (
-    <div style={{ height: "80", width: '100%' }}>
+    <div style={{ height: "80vh", width: '100%' }}>
       <DataGrid
         rows={products}
         columns={columns}
@@ -131,7 +132,8 @@ const uploadeProductHandler = async () => {
     function handleFileChange(event) {
         setFile(event.target.files[0]);
     }
-   const [produtSizes, setSizes] = useState([]);
+   const [productSizes, setSizes] = useState([]);
+   const [productCategories, setCategories] = useState([]);
    const [newColor, setNewColor] = useState("");
 const [preview, setPreview] = useState()
 
@@ -144,13 +146,22 @@ const [preview, setPreview] = useState()
   }, []);
 
  useEffect(() => {
+    setNewProduct({
+        ...newProduct,
+        Categories:productCategories
+    })
+        // free memory when ever this component is unmounted
+        return 
+    }, [productCategories])
+
+ useEffect(() => {
 	setNewProduct({
 		...newProduct,
-		Sizes:produtSizes
+		Sizes:productSizes
 	})
         // free memory when ever this component is unmounted
         return 
-    }, [produtSizes])
+    }, [productSizes])
  useEffect(() => {
         if (!file) {
             setPreview(undefined)
@@ -172,6 +183,15 @@ const [preview, setPreview] = useState()
       typeof value === 'string' ? value.split(',') : value,
     );
   };
+  const handleCategories = (event) => {
+ const {
+      target: { value },
+    } = event;
+    setCategories(
+      // On autofill we get a stringified value.
+      typeof value === 'string' ? value.split(',') : value,
+    );
+  }
 
   const handleNewProduct = (event) => {
   	setNewProduct({
@@ -181,7 +201,7 @@ const [preview, setPreview] = useState()
   }
 
     const handleFileUpload =  async() => {
-       if(user.email === "12derciomaduna@gmail.com"){
+       // if(user.email === "12derciomaduna@gmail.com"){
          if (!file) {
             alert("Please upload an image first!");
         }
@@ -208,10 +228,15 @@ const [preview, setPreview] = useState()
                 getDownloadURL(uploadTask.snapshot.ref).then( async (url) => {
                     console.log(url);
                     try {
+                        if(Object.values(newProduct).includes("")){
+                            alert("Please fill in all fields")
+                            consolelog()
+                        }else{
                         await setDoc(doc(db, "products", `${new Date().getTime() + newProduct.Title.replace(/\s/g, '')} `), {
                                 ...newProduct,
                                 Image:url,
                         });
+                        }
                     } catch (err) {
                       console.error(err);
                       alert(err.message);
@@ -220,9 +245,9 @@ const [preview, setPreview] = useState()
                 });
             }
         );
-    }else{
-        alert("Please login with the Admin Account to make such changes.")
-    }
+    // }else{
+    //     alert("Please login with the Admin Account to make such changes.")
+    // }
 
 
     };
@@ -233,6 +258,18 @@ const [preview, setPreview] = useState()
 		"MD",
 		"LG",
 		"XL",
+    ]
+
+    const Categories = [
+        "T-Shirts",
+        "Shirts",
+        "Caps",
+        "Beanies",
+        "Bucket Hats",
+        "Jackets",
+        "Socks",
+        "Pants",
+        "Shorts",
     ]
 
     const addColor = (e)=> {
@@ -247,11 +284,11 @@ const [preview, setPreview] = useState()
 			Title:"",
 			Description:"",
 			Price:"",
-			Image:"",
 			Sale:false,
 			HotIn:false,
 			Colors:[],
-			Sizes:[],
+            Sizes:[],
+			Categories:[],
 
 		})
 
@@ -261,7 +298,7 @@ const [preview, setPreview] = useState()
 		  const querySnapshot = await getDocs(collection(db, "products"));
 
     querySnapshot.forEach((item)=>{
-    	local.push({...item.data() , id:new Date().getTime()})
+    	local.push({...item.data()})
     })
 console.log(local)
 setProducts(local)
@@ -279,7 +316,15 @@ setProducts(local)
             <button onClick={handleUpload}>Upload to Firebase</button>
             <p>{percent} "% done"</p>*/}
 
-<Button onClick={()=>setOpenDrawer(true)}> Add Product</Button>
+{/*<Button onClick={()=>setOpenDrawer(true)}> Add Product</Button>*/}
+      <SpeedDial
+        ariaLabel="SpeedDial basic example"
+        onClick={()=>setOpenDrawer(true)}
+        sx={{ position: 'absolute' , color:Theme["FOURTH_COLOR"], bottom: "2.5rem", right: "2.5rem" }}
+        icon={<SpeedDialIcon />}
+      >
+       
+      </SpeedDial>
 {show
  && 
 	<DataTable products={products} />}
@@ -336,6 +381,7 @@ setProducts(local)
             <CircularProgress size={"12.5rem"} />
             ) : (
 <Box>
+<LinearProgress variant="determinate" sx={{ display: percent === 0 || 100 ? 'none' : 'flex' }} value={percent} />
             <Grid container>
             <Grid item xs={12} lg={4} sx={{ height:'fit-content', background:'' , padding:'1.5rem' }}>
             <Typography sx={{ fontSize:'21px' , color:Theme["FOURTH_COLOR"] , textAlign:'left' , padding:'8px 0' , fontWeight:'600' }}> Product Info </Typography>
@@ -375,12 +421,12 @@ setProducts(local)
 
 </Box>
 
-             <Typography sx={{ fontSize:'21px' , color:Theme["FOURTH_COLOR"] , textAlign:'left' , padding:'8px 0' , fontWeight:'500' }}> Sizes </Typography>
+           Categories  <Typography sx={{ fontSize:'21px' , color:Theme["FOURTH_COLOR"] , textAlign:'left' , padding:'8px 0' , fontWeight:'500' }}> Sizes </Typography>
                         <Select
           labelId="demo-multiple-name-label"
           id="demo-multiple-name"
           multiple
-          value={produtSizes}
+          value={productSizes}
           onChange={handleChange}
           label={"Sizes"}
           input={<OutlinedInput label="Sizes" />}
@@ -391,7 +437,7 @@ setProducts(local)
             <MenuItem
               key={item}
               value={item}
-              // style={getStyles(name, produtSizes, theme)}
+              // style={getStyles(name, productSizes, theme)}
             >
               {item}
             </MenuItem>
@@ -403,7 +449,34 @@ setProducts(local)
             <Typography sx={{ fontSize:'21px' , color:Theme["FOURTH_COLOR"] , textAlign:'left' , padding:'8px 0' , fontWeight:'600' }}> Select Image </Typography>
             <TextField onChange={handleFileChange} accept="/image/*" sx={{ width:'100%' , margin:'12px 0' }} type="file" label="" />
             
-            <img src={preview} style={{ width:'100%' }} /> 
+            <img src={preview} style={{ width:'100%' , height:'50vh' }} />
+
+
+            <Box sx={{ margin:'21px 0' }}>
+            <Typography sx={{ fontSize:'21px' , color:Theme["FOURTH_COLOR"] , textAlign:'left' , padding:'8px 0' , fontWeight:'600' }}> Categories </Typography>
+   <Select
+          labelId="demo-multiple-name-label"
+          id="demo-multiple-name"
+          multiple
+          value={productCategories}
+          onChange={handleCategories}
+          label={"Categories"}
+          input={<OutlinedInput label="Categories" />}
+          MenuProps={MenuProps}
+          sx={{ width:'100%' }}
+        >
+          {Categories.map((item) => (
+            <MenuItem
+              key={item}
+              value={item}
+              // style={getStyles(name, productSizes, theme)}
+            >
+              {item}
+            </MenuItem>
+          ))}
+        </Select>
+
+            </Box> 
             {/*}*/}
             </Grid>
                         <Grid item xs={12} lg={4} sx={{ height:'fit-content', background:'' , padding:'1.5rem' }}>

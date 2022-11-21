@@ -1,10 +1,25 @@
 import '../styles/globals.css'
 import Auth from "../components/auth"
 import dynamic from 'next/dynamic'
-import { createContext , useContext  , useState} from "react"
+import { useEffect , createContext , useContext  , useState} from "react"
 const AnimatedCursor = dynamic(() => import('react-animated-cursor'), {
   ssr: false
 });
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {
+  query,
+  collection,
+  setDoc,
+  updateDoc,
+  addDoc,
+  deleteDoc,
+  doc,
+  getDocs,
+  where,
+} from "firebase/firestore";
+import { storage, db } from "./../firebase/firebaseConfig";
 
 export const DisplayLoader = createContext(false);
 export const User = createContext({
@@ -28,28 +43,48 @@ function MyApp({ Component, pageProps }) {
   wishlist:[],
 })
 
+  //   useEffect(() => {
+  //   initLists()
+  // }, [user.email , user.uid , user.cart , user.orders , user.wishlist]);
+
+const initLists = async () => {
+    if (user.email !== "") {
+      let userLists = {};
+      const querySnapshot = await getDocs(collection(db, "users"));
+
+      querySnapshot.forEach((item) => {
+        if (item.data().email === user.email) {
+          userLists = { ...item.data()};
+        }
+      });
+      console.log(userLists)
+      setUser({...user , ...userLists});
+    } else {
+      // alert("User not logged in.");
+    }
+  };
+  console.log(user)
+
+  useEffect(()=>{
+    const localStorageUser = localStorage.getItem("authUser") ? JSON.parse(localStorage.getItem("authUser")) : {
+  uid:"",
+  name:"",
+  surname:"",
+  profilePicture:"",
+  email:"",
+  orders:[],
+  wishlist:[],
+}  
+console.log(localStorageUser)
+console.log(typeof(localStorageUser))
+    setUser({...localStorageUser})
+  },[user.email , user.uid])
+
+  // console.log(typeof(user))
+
   return(
     <User.Provider value={{ user , setUser }}>
 <DisplayLoader.Provider value={{ loading , setLoading }}>
-  <AnimatedCursor innerSize={24}
-      outerSize={48}
-      color='56, 36, 27'
-      outerAlpha={0.2}
-      innerScale={0.7}
-      outerScale={2}
-      clickables={[
-        'a',
-        'input[type="text"]',
-        'input[type="email"]',
-        'input[type="number"]',
-        'input[type="submit"]',
-        'input[type="image"]',
-        'label[for]',
-        'select',
-        'textarea',
-        'button',
-        '.link'
-      ]} />
 
        { loading ? ( 
                  <div>Laindg</div>
@@ -59,7 +94,7 @@ function MyApp({ Component, pageProps }) {
            <Auth />
            </>
            )}
-
+        <ToastContainer /> 
 </DisplayLoader.Provider>
     </User.Provider>
     )
@@ -67,3 +102,23 @@ function MyApp({ Component, pageProps }) {
 }
 
 export default MyApp
+
+  // <AnimatedCursor innerSize={24}
+  //     outerSize={48}
+  //     color='56, 36, 27'
+  //     outerAlpha={0.2}
+  //     innerScale={0.7}
+  //     outerScale={2}
+  //     clickables={[
+  //       'a',
+  //       'input[type="text"]',
+  //       'input[type="email"]',
+  //       'input[type="number"]',
+  //       'input[type="submit"]',
+  //       'input[type="image"]',
+  //       'label[for]',
+  //       'select',
+  //       'textarea',
+  //       'button',
+  //       '.link'
+  //     ]} />
