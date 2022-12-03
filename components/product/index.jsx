@@ -12,7 +12,7 @@ import { User } from "../../pages/_app"
 import { toast } from 'react-toastify';
 
 export default function ProductContainer(props) {
-	const { user ,setUser} = React.useContext(User);
+	const { user ,setUser , authOpen , SetAuthOpen} = React.useContext(User);
 
 	const [ products , setProducts] = React.useState([]);
 	const [ cart , setCart] = React.useState([]);
@@ -103,7 +103,10 @@ export default function ProductContainer(props) {
 	// }
 
 	const handleAddToCart = async (product) => {
-  setCart(
+		if(user.uid === "" || user.email === ""){
+			SetAuthOpen(true)
+		}else{
+			  setCart(
     cart => cart.some(item => item.id === product.id)
       ? cart.map(item => item.id === product.id 
           ? { ...item, Quantity: item.Quantity + product.Quantity } 
@@ -147,6 +150,7 @@ export default function ProductContainer(props) {
 						position: toast.POSITION.TOP_RIGHT
 					});
 			}
+		}
 }
 
 console.log("updated cart :" , cart)
@@ -261,12 +265,12 @@ console.log("updated cart :" , cart)
         	})
         }
 
-        <Grid item xs={6} md={4} lg={2.4} sx={{ display:{lg:'none' , xs:'flex'} , justifyContent:'center' , background:'rgba()' , alignItems:'center' }}>
+        {/*<Grid item xs={6} md={4} lg={2.4} sx={{ display:{lg:'none' , xs:'flex'} , justifyContent:'center' , background:'rgba()' , alignItems:'center' }}>
         <Paper sx={{ width:'100%' , height:'100%' , display:'flex' , alignItems:'center', justifyContent:'center' , flexDirection:'column' , background:'transparent' , opacity:'0.5' , "&:hover":{ opacity:'1' } ,   }} elevation={0}> 
         <AddIcon sx={{ fontSize:'84px' }}  />
         View More
         </Paper>
-        </Grid>
+        </Grid>*/}
         </Grid>
         </Box>
         );

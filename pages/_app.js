@@ -45,6 +45,7 @@ function MyApp({ Component, pageProps }) {
   wishlist:[],
 })
 
+  const [ authOpen , SetAuthOpen ] = useState(user.uid === "")
   //   useEffect(() => {
   //   initLists()
   // }, [user.email , user.uid , user.cart , user.orders , user.wishlist]);
@@ -82,7 +83,7 @@ const initLists = async () => {
 
 
   return(
-    <User.Provider value={{ user , setUser }}>
+    <User.Provider value={{ user , setUser , authOpen , SetAuthOpen }}>
     <SelectedProduct.Provider value={{ selectedProduct , setSelectedProduct }}>
 
 <DisplayLoader.Provider value={{ loading , setLoading }}>

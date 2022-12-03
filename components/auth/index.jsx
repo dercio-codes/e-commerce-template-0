@@ -19,7 +19,7 @@ import { toast } from 'react-toastify';
 export default function Auth() {
     const [ products ,setProducts] = React.useState([]);
 	const [ signIn ,setSignIn] = React.useState(true);
-    const { user ,setUser} = React.useContext(User);
+    const { user ,setUser , authOpen , SetAuthOpen} = React.useContext(User);
 	const [ userLogin ,setUserLogin] = React.useState({
         email:"",
         password:""
@@ -205,7 +205,7 @@ const initLists = async () => {
     		// borderBottom:'1px solid red'
     		 }}>
 
-    		 <Modal open={user.uid === ""} sx={{ display:'flex',
+    		 <Modal open={authOpen} onClose={()=>SetAuthOpen(false)} sx={{ display:'flex',
     		flexDirection:'column',
     		justifyContent:'center',
     		alignItems:'center',
@@ -234,6 +234,10 @@ const initLists = async () => {
     		// background:'#222',
     		// borderBottom:'1px solid red'
     		 }}>
+                  <Box sx={{ width:'100%' , top:'0' , Index:'9999' , background :"white" , position:'sticky' , display:'flex',justifyContent:'flex-end' , padding:'1.2rem' }}>
+     <Button onClick={() => SetAuthOpen(false)} sx={{fontSize:'21px' , color:Theme["FOURTH_COLOR"] , fontWeight:'600' , }}> X
+     </Button>
+     </Box>
     		 <Grid container>
     		 	<Grid item xs={12} lg={6} sx={{  background:'' , padding:'12px 21px' }}>
     		<Typography sx={{ fontSize:'28px' , color:Theme["FOURTH_COLOR"] , padding:'0 0' , fontWeight:'600' }}> {"Oops you are not logged in..."} </Typography>
@@ -285,7 +289,7 @@ const initLists = async () => {
 
 
 
-              <Drawer anchor="bottom" open={user.uid === ""} sx={{ display:{ xs:'block' , lg:'none'},
+              <Drawer anchor="bottom" open={authOpen} onClose={()=>SetAuthOpen(false)} sx={{ display:{ xs:'block' , lg:'none'},
             flexDirection:'column',
             justifyContent:'center',
             alignItems:'center',
@@ -314,6 +318,10 @@ const initLists = async () => {
             // background:'#222',
             // borderBottom:'1px solid red'
              }}>
+                  <Box sx={{ width:'100%' , top:'0' , Index:'9999' , background :"white" , position:'sticky' , display:'flex',justifyContent:'flex-end' , padding:'1.2rem' }}>
+     <Button onClick={() => SetAuthOpen(false)} sx={{fontSize:'21px' , color:Theme["FOURTH_COLOR"] , fontWeight:'600' , }}> X
+     </Button>
+     </Box>
              <Grid container>
                 <Grid item xs={12} lg={6} sx={{ minHeight:'80vh', background:'' , padding:'12px 21px' , display:'flex' , justifyContent:'center' , alignItems:'' , flexDirection:'column' , marginTop:{xs:'40vh' , lg:'0'} }}>
             <Typography sx={{ fontSize:'28px' , color:Theme["FOURTH_COLOR"] , padding:'0 0' , fontWeight:'600' }}> {"Oops you are not logged in..."} </Typography>
