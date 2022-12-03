@@ -99,6 +99,7 @@ const initLists = async () => {
                     : localStorage.removeItem('authUser')
                 });
                 console.log(resultsUser);
+                SetAuthOpen(false)
                 setUser({...resultsUser});
 
                 UpdateUser(resultsUser)
@@ -126,6 +127,7 @@ const initLists = async () => {
                 const token = credential.accessToken;
                 // The signed-in user info.
                 const resultsUser = result.user;
+                SetAuthOpen(false)
                 setUser({...resultsUser});
                 UpdateUser(resultsUser)
                 console.log(resultsUser);
@@ -154,6 +156,7 @@ const initLists = async () => {
                     : localStorage.removeItem('authUser')
                 });
                 console.log(resultsUser);
+                SetAuthOpen(false)
                 setUser({...resultsUser , displayName:userSignUp.displayName});
             // ...
           })
@@ -176,6 +179,7 @@ const initLists = async () => {
                     : localStorage.removeItem('authUser')
                 });
                 console.log(resultsUser);
+                SetAuthOpen(false)
                 setUser({...resultsUser});
             // ...
           })

@@ -126,7 +126,7 @@ const initLists = async () => {
     }
   };
 
-  let cartTotal = 99
+  let cartTotal = 0
 
   user.cart && user.cart.map((item)=>{
     cartTotal = cartTotal + Number(item.Price* item.Quantity)
@@ -755,7 +755,7 @@ const OrderItems = ({item , index , orderQtyTotal}) => {
                         color: Theme["FOURTH_COLOR"],
                         padding: "6px 0",
                         fontWeight: "600",
-                      }}>Color : </Typography>
+                      }}>Size : </Typography>
             <Button variant="outline" sx={{ margin:'0 21px' , border:'1px solid #black' , background:"#111" , color:"#eee" , cursor:'not-allowed' , width:'48px', height:'34px' , "&:hover":{color:"#111" , backgorundColor:"#eee"} }}>{item.Size}</Button>
  </Box>
  <Box  sx={{ display:'flex' , alignItems:'center'  }}>
