@@ -447,7 +447,7 @@ const initLists = async () => {
               })
 
               return (
-                <OrderItems orderQtyTotal={orderQtyTotal} item={item} index={orderQtyTotal} />
+                <OrderItems key={index} orderQtyTotal={orderQtyTotal} item={item} index={orderQtyTotal} />
               );
             })}
           </Grid>
@@ -722,7 +722,7 @@ const OrderItems = ({item , index , orderQtyTotal}) => {
         {
           item.products.map((item,index)=>{
             return(
-        <SwiperSlide>
+        <SwiperSlide key={index}>
                  <Box
                     sx={{
                       width: { xs: "100%" },
