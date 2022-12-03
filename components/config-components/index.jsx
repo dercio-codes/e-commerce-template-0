@@ -3,77 +3,28 @@ import { storage , db } from "./../../firebase/firebaseConfig";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { Box , LinearProgress , Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { Button , CircularProgress ,Select ,Drawer ,OutlinedInput ,MenuItem,TextField } from '@mui/material';
+import { Button , Menu , IconButton , CircularProgress ,Select ,Drawer ,OutlinedInput ,MenuItem,TextField } from '@mui/material';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import Link from "next/link"
 import * as Theme from "../../constants"
-import { query, doc ,  collection, addDoc , setDoc, getDocs, where } from "firebase/firestore";
+import { query, doc , deleteDoc ,  collection, addDoc , setDoc, getDocs, where } from "firebase/firestore";
 import { User } from "../../pages/_app"
 import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
-
+import EditIcon from '@mui/icons-material/Edit';
+import SearchIcon from '@mui/icons-material/Search';
+import DeleteIcon from '@mui/icons-material/Delete';
+import MoreVertIcon from '@mui/icons-material/MoreVert'; 
+import EditProduct from "./edit-product"
 import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-
-
-// id
-// Title
-// Description
-// Price
-// Image
-// Sale
-// HotIn
-// Colors
-// Sizes
-const columns = [
-  { field: 'id', headerName: 'ID', width: 70 },
-   {
-    field: 'Image',
-    headerName: 'Image',
-    width: 160,
-  },
-  { field: 'Title', headerName: 'Title', width: 130 },
-  { field: 'Description', headerName: 'Description', width: 400 },
-  { field: 'Sale', headerName: 'Sale', width: 150 },
-  { field: 'HotIn', headerName: 'Hot In', width: 150 },
-  { field: 'Colors', headerName: 'Colors', width: 150 },
-  { field: 'Sizes', headerName: 'sIZES', width: 150 },
-  {
-    field: 'Price',
-    headerName: 'Price',
-    type: 'number',
-    width: 120,
-  },
-
- 
-];
-
-const rows = [
-  { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-  { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-  { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-  { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-  { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-  { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-  { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-  { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-  { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-];
-
-function DataTable({products}) {
-  return (
-    <div style={{ height: "80vh", width: '100%' }}>
-      <DataGrid
-        rows={products}
-        columns={columns}
-        pageSize={12}
-        rowsPerPageOptions={[5]}
-        checkboxSelection
-      />
-    </div>
-  );
-}
-
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -90,39 +41,13 @@ const MenuProps = {
 function FileUploader() {
     const { user ,setUser} = React.useContext(User);
 
-const uploadeProductHandler = async () => {
-	  try {
-        setLoading(true)
-    // const res = await signInWithPopup(auth, googleProvider);
-    // const user = res.user;
-    const productData = Object.keys(newProduct)
-    if(productData.includes("")){
-        alert("Please fill in fields")
-    }else{
-        handleFileUpload()
-    console.log(newProduct)
-    const q = query(collection(db, "products"), where("id", "==", newProduct.id));
-    const docs = await getDocs(q);
-    const uploadObject = {
-        id:`${new Date().getTime()}-item`,
-        Image:newImage,
-        ...newProduct,
-      }
-      console.log(uploadObject)
-    await addDoc(collection(db, "products"), uploadObject);
-    }
-        setLoading(false)
-  } catch (err) {
-    console.error(err);
-    alert(err.message);
-  }
-}
     // State to store uploaded file
     const [file, setFile] = useState("");
     const [newImage, SetNewImage] = useState("");
     const [products, setProducts] = useState([]);
     const [show, setShow] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [editing, setEditing] = useState(false);
  
     // progress
     const [percent, setPercent] = useState(0);
@@ -162,6 +87,8 @@ const [preview, setPreview] = useState()
         // free memory when ever this component is unmounted
         return 
     }, [productSizes])
+
+
  useEffect(() => {
         if (!file) {
             setPreview(undefined)
@@ -174,6 +101,8 @@ const [preview, setPreview] = useState()
         // free memory when ever this component is unmounted
         return () => URL.revokeObjectURL(objectUrl)
     }, [file])
+
+
   const handleChange = (event) => {
     const {
       target: { value },
@@ -183,6 +112,9 @@ const [preview, setPreview] = useState()
       typeof value === 'string' ? value.split(',') : value,
     );
   };
+
+
+
   const handleCategories = (event) => {
  const {
       target: { value },
@@ -202,7 +134,7 @@ const [preview, setPreview] = useState()
 
     const handleFileUpload =  async() => {
        // if(user.email === "12derciomaduna@gmail.com"){
-         if (!file) {
+         if (!file && !editing) {
             alert("Please upload an image first!");
         }
  
@@ -232,10 +164,26 @@ const [preview, setPreview] = useState()
                             alert("Please fill in all fields")
                             consolelog()
                         }else{
-                        await setDoc(doc(db, "products", `${new Date().getTime() + newProduct.Title.replace(/\s/g, '')} `), {
-                                ...newProduct,
-                                Image:url,
-                        });
+                                if(editing){
+const querySnapshot = await getDocs(collection(db, "products"));
+
+      querySnapshot.forEach(async(item) => {
+        if(item.data().id === newProduct.id){
+            console.log(item.id)
+             await setDoc(doc(db, "products", item.id), {
+                                        ...newProduct,
+                                });
+        }
+      });
+                                }else{
+
+                                await setDoc(doc(db, "products", `${new Date().getTime() + newProduct.Title.replace(/\s/g, '')} `), {
+                                        ...newProduct,
+                                        Image:url,
+                                });
+                                }
+                                getProducts()
+                                setOpenDrawer(false)
                         }
                     } catch (err) {
                       console.error(err);
@@ -245,10 +193,6 @@ const [preview, setPreview] = useState()
                 });
             }
         );
-    // }else{
-    //     alert("Please login with the Admin Account to make such changes.")
-    // }
-
 
     };
 
@@ -292,6 +236,7 @@ const [preview, setPreview] = useState()
 
 		})
 
+    console.log(newProduct)
 
     	const getProducts = async () => {
 		const local = []
@@ -304,73 +249,44 @@ console.log(local)
 setProducts(local)
 	}
 
-	// React.useEffect(()=>{
-	// 	getProducts()
-	// },[])
+            const deleteItem = async (product) => {
 
- console.log(products)
- console.log(typeof(products))
+        const querySnapshot = await getDocs(collection(db, "products"));
+
+    querySnapshot.forEach(async (item) => {
+      if (item.data().id === product.id) {
+        await deleteDoc(doc(db, "products", item.id), {
+          ...product,
+        });
+
+        console.log("Done deleting")
+        getProducts()
+      }
+    });
+    }
+
+
     return (
         <Box sx={{ padding:'2.5rem' , color:'#eee' }}>
-            {/*<input type="file" onChange={handleChange} accept="/image/*" />
-            <button onClick={handleUpload}>Upload to Firebase</button>
-            <p>{percent} "% done"</p>*/}
-
-{/*<Button onClick={()=>setOpenDrawer(true)}> Add Product</Button>*/}
-      <SpeedDial
-        ariaLabel="SpeedDial basic example"
-        onClick={()=>setOpenDrawer(true)}
-        sx={{ position: 'absolute' , color:Theme["FOURTH_COLOR"], bottom: "2.5rem", right: "2.5rem" }}
-        icon={<SpeedDialIcon />}
-      >
+      
+        <SpeedDial
+            ariaLabel="SpeedDial basic example"
+            onClick={()=>setOpenDrawer(true)}
+            sx={{ position: 'absolute' , color:Theme["FOURTH_COLOR"], bottom: "2.5rem", right: "2.5rem" }}
+            icon={<SpeedDialIcon />}
+        >
        
       </SpeedDial>
-{show
- && 
-	<DataTable products={products} />}
+      <BasicTable  
+            setPreview={setPreview} 
+            setNewProduct={setNewProduct} 
+            rows={products} 
+            setOpenDrawer={setOpenDrawer}
+            setEditing={setEditing}
+            deleteItem={deleteItem}
+             />
+            
 
- {/*<DataGrid
-        rows={[
-    {
-        "HotIn": false,
-        "id": "3218743",
-        "Sizes": [
-            "SM",
-            "MD",
-            "LG",
-            "XL"
-        ],
-        "Quantity": 5,
-        "Title": "Sunday Blom Product 1 Title",
-        "Price": "120",
-        "Description": "Sunday Blom Product 1 Secritption",
-        "Colors": [],
-        "Image": "https://firebasestorage.googleapis.com/v0/b/the-sunday-blom-store.appspot.com/o/products%2Fmodel.png?alt=media&token=ed372a71-d77e-4a94-bcbf-4232cb01e5d3",
-        "Sale": false
-    },
-    {
-        "id": "234412",
-        "Title": "Sdunay Blom Hats",
-        "Sizes": [
-            "MD",
-            "XL",
-            "LG"
-        ],
-        "Price": "250",
-        "HotIn": false,
-        "Colors": [],
-        "Quantity": 5,
-        "Description": "Hats for sunday blom.",
-        "Image": "https://firebasestorage.googleapis.com/v0/b/the-sunday-blom-store.appspot.com/o/products%2Fscreenshot.jpg?alt=media&token=db8ee5db-9537-48c1-8610-cc966409a846",
-        "Sale": false
-    }
-]}
-        columns={columns}
-        pageSize={12}
-        height={400}
-        rowsPerPageOptions={[5]}
-        checkboxSelection
-      />*/}
 <Drawer       anchor={"bottom"}
       open={openDrawer}
       sx={{ background:'transparent' , zIndex:'100' }}
@@ -381,6 +297,7 @@ setProducts(local)
             <CircularProgress size={"12.5rem"} />
             ) : (
 <Box>
+<Box sx={{ height:'21px' , display:percent === 0 || percent === 100 ? "none" : "flex" , background:Theme["FOURTH_COLOR"] , position:'fixed' , width:`${percent}%` ,top:0 , left:0}} />
 <LinearProgress variant="determinate" sx={{ display: percent === 0 || 100 ? 'none' : 'flex' }} value={percent} />
             <Grid container>
             <Grid item xs={12} lg={4} sx={{ height:'fit-content', background:'' , padding:'1.5rem' }}>
@@ -426,18 +343,25 @@ setProducts(local)
           labelId="demo-multiple-name-label"
           id="demo-multiple-name"
           multiple
-          value={productSizes}
+          value={newProduct.Sizes}
           onChange={handleChange}
           label={"Sizes"}
           input={<OutlinedInput label="Sizes" />}
           MenuProps={MenuProps}
           sx={{ width:'100%' }}
         >
-          {sizes.map((item) => (
+          {!editing && sizes.map((item) => (
             <MenuItem
               key={item}
               value={item}
-              // style={getStyles(name, productSizes, theme)}
+            >
+              {item}
+            </MenuItem>
+          ))}
+          {editing && sizes.map((item) => (
+            <MenuItem
+              key={item}
+              value={item}
             >
               {item}
             </MenuItem>
@@ -458,7 +382,7 @@ setProducts(local)
           labelId="demo-multiple-name-label"
           id="demo-multiple-name"
           multiple
-          value={productCategories}
+          value={newProduct.Categories}
           onChange={handleCategories}
           label={"Categories"}
           input={<OutlinedInput label="Categories" />}
@@ -469,7 +393,6 @@ setProducts(local)
             <MenuItem
               key={item}
               value={item}
-              // style={getStyles(name, productSizes, theme)}
             >
               {item}
             </MenuItem>
@@ -485,7 +408,6 @@ setProducts(local)
         <Box sx={{ display:'flex' , flexDirection:'column' , alignItems:'center' }}>
          {  
             preview !== "" ? (
-                    // <img src={preview} style={{ width:'100%' }} /> 
      <Box sx={{
           height:'250px',
           width:'100%',
@@ -494,11 +416,14 @@ setProducts(local)
         backgroundSize:'contain' ,
         backgroundRepeat:'no-repeat' ,
         display:'flex',
-        // justifyContent:'flex-end',
-        // padding:'21px'
+        justifyContent:'space-between',
          }} >
-<Box sx={{ padding:' 12px 21px' , color:'#eee' , fontWeight:'600' , fontSize:'14px' , height:'40px' , background:newProduct.Sale || newProduct.HotIn ? newProduct.Sale  ? "rgba(0,200,0,.8)" : "rgba(255,0,0,.8)" : ""  }}>
-  {newProduct.Sale || newProduct.HotIn ? newProduct.Sale  ? "Sale" : "Hot In" : "" }
+<Box sx={{ padding:' 12px 21px' , opacity:newProduct.HotIn ? "1" : '0' , color:'#eee' , fontWeight:'600' , fontSize:'14px' , height:'40px' , background:'rgba(0,200,0,.8)' }}>
+  {"Hot In"}
+</Box>
+
+<Box sx={{ padding:' 12px 21px' , opacity:newProduct.Sale ? "1" : '0' , color:'#eee' , fontWeight:'600' , fontSize:'14px' , height:'40px' , background:'rgba(255,0,0,.8)' }}>
+  {"Sale "}
 </Box>
 
          </Box>
@@ -553,4 +478,93 @@ setProducts(local)
 }
  
 export default FileUploader;
-            // <Box sx={{ backgroundImage:`url("${preview}"")` , backgroundSize:'contain' , backgroundPosition:'center' , width:'100%' , height:'350px' }} />
+         
+
+
+function BasicTable({rows , openDrawer, setOpenDrawer , setNewProduct , deleteItem , setPreview , setEditing}) {
+
+    const [ searchQuery , setSearchQuery] = React.useState("");
+    let searchResults = []
+                   
+     rows.map((item)=>{
+        if(item.Title.includes(searchQuery)){
+            searchResults.push(item)
+        }
+     })
+
+  return (
+    <TableContainer component={Paper}>
+        <Box sx={{ display:'flex' , alignItems:'center' , justifyContent:'flex-end' }}>
+<TextField sx={{ width:'40%' }} value={searchQuery} onChange={(e)=>setSearchQuery(e.target.value)}  />
+       <Button sx={{ height:'100%' , background:'#111' , padding:'21px 0' , }}>
+       <SearchIcon sx={{ color:'#eee' }} />
+       </Button>
+        </Box>
+      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+              <TableCell align="left">Title</TableCell>
+              <TableCell align="left">Description</TableCell>
+              <TableCell align="left">Sale</TableCell>
+              <TableCell align="left">HotIn</TableCell>
+              <TableCell align="left">Colors</TableCell>
+              <TableCell align="left">Sizes</TableCell>
+              <TableCell align="left">Edit</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          { searchQuery === "" ? rows.map((row) => (
+            <TableRow
+              key={row.name}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
+              <TableCell align="left">{row.Title}</TableCell>
+              <TableCell align="left">{row.Description}</TableCell>
+              <TableCell align="left">{row.Sale ? "Yes" : "No"}</TableCell>
+              <TableCell align="left">{row.HotIn? "Yes" : "No"}</TableCell>
+              <TableCell align="left">{row.Colors}</TableCell>
+              <TableCell align="left">{row.Sizes.map((item)=> `${item},`)}</TableCell>
+              <TableCell align="left"><IconButton onClick={()=>{
+                setEditing(true)
+                setPreview(row.Image)
+                setNewProduct({...row})
+                setOpenDrawer(true)
+              }
+            }><EditIcon /></IconButton></TableCell>
+                <TableCell align="left"><IconButton onClick={()=>{
+                    deleteItem(row)
+              }
+            }><DeleteIcon /></IconButton></TableCell>
+           
+            </TableRow>
+          )) : searchResults.map((row) => (
+            <TableRow
+              key={row.name}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
+              <TableCell align="left">{row.Title}</TableCell>
+              <TableCell align="left">{row.Description}</TableCell>
+              <TableCell align="left">{row.Sale ? "Yes" : "No"}</TableCell>
+              <TableCell align="left">{row.HotIn? "Yes" : "No"}</TableCell>
+              <TableCell align="left">{row.Colors}</TableCell>
+              <TableCell align="left">{row.Sizes.map((item)=> `${item},`)}</TableCell>
+              
+              <TableCell align="left"><IconButton onClick={()=>{
+                setEditing(true)
+                setPreview(row.Image)
+                setNewProduct({...row})
+                setOpenDrawer(true)
+              }
+            }><EditIcon /></IconButton></TableCell>
+                <TableCell align="left"><IconButton onClick={()=>{
+                    deleteItem(row)
+              }
+            }><DeleteIcon /></IconButton></TableCell>
+           
+            </TableRow>
+          )) }
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+}

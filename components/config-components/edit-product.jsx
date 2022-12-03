@@ -5,13 +5,13 @@ import { storage , db } from "./../../firebase/firebaseConfig";
 import Typography from '@mui/material/Typography';
 import { Box , OutlinedInput  , Button , Select , MenuItem , Grid ,Paper , TextField } from '@mui/material';
 import * as Theme from "../../constants"
-import ProductItem from "./product-item"
+import ProductItem from "./../product/product-item"
 import AddIcon from '@mui/icons-material/Add';
 import { query, collection, doc,setDoc , addDoc , getDocs, where } from "firebase/firestore";
 import { User } from "../../pages/_app"
 import { toast } from 'react-toastify';
 
-export default function ProductContainer(props) {
+export default function EditProduct(props) {
 	const { user ,setUser} = React.useContext(User);
 
 	const [ products , setProducts] = React.useState([]);

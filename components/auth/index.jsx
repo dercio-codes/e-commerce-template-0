@@ -2,7 +2,7 @@ import * as React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
-import { Box , Avatar , Modal , Paper , Button , Grid , TextField } from '@mui/material';
+import { Box , Drawer, Avatar , Modal , Paper , Button , Grid , TextField } from '@mui/material';
 import * as Theme from "../../constants"
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { query, collection, addDoc, setDoc , deleteDoc , doc , getDocs, where } from "firebase/firestore";
@@ -282,6 +282,86 @@ const initLists = async () => {
     		 	</Grid>
     		 </Box>
     		 </Modal>
+
+
+
+              <Drawer anchor="bottom" open={user.uid === ""} sx={{ display:'flex',
+            flexDirection:'column',
+            justifyContent:'center',
+            alignItems:'center',
+            zIndex:'5 !important',
+            // background:'#111',
+            border:'none'
+             }}>
+                <Box sx={{  
+            width: {
+                xs:"100%"
+            } , 
+            padding:{
+                // xs:'0.5rem',
+                lg:'3.5rem 1.5rem',
+            },
+            // marginTop:'2.rem',
+            overflowY:{xs:'auto' , lg:"hidden"},
+            height:'90vh',
+            // minHeight:'50vh',
+            // maxHeight:'80vh',
+            display:{xs:'flex', lg: 'none'},
+            flexDirection:'column',
+            justifyContent:'center',
+            // zIndex:'9',
+            background:'rgba(255,255,255,1)',
+            // background:'#222',
+            // borderBottom:'1px solid red'
+             }}>
+             <Grid container>
+                <Grid item xs={12} lg={6} sx={{ minHeight:'80vh', background:'' , padding:'12px 21px' , display:'flex' , justifyContent:'center' , alignItems:'' , flexDirection:'column' , marginTop:{xs:'40vh' , lg:'0'} }}>
+            <Typography sx={{ fontSize:'28px' , color:Theme["FOURTH_COLOR"] , padding:'0 0' , fontWeight:'600' }}> {"Oops you are not logged in..."} </Typography>
+            <Typography sx={{ fontSize:'21px' , color:Theme["FOURTH_COLOR"] , padding:'0 0' , fontWeight:'600',margin:'12px 0' }}> Sign In </Typography>
+                <img src="https://cdn-icons-png.flaticon.com/512/3684/3684620.png" alt="" style={{ width:'100%', margin:'0 auto ',height:"70px" , objectFit:'contain' , margin:'12px 0' }} />
+           
+                {
+                    signIn ? (
+                            <form onSubmit={handleSignIn}>
+
+            <TextField value={userLogin.email} sx={{ width:'100%' , margin:'12px 0' }} onChange={handleChange}  type="email" label="Email" name="email" />
+            <TextField value={userLogin.password} sx={{ width:'100%' , margin:'12px 0' }} onChange={handleChange}  type="password" label="Password" name="password" />
+                <Button onClick={handleSignIn} sx={{ width:'100%' , padding:'12px 21px' , background:Theme["FOURTH_COLOR"] ,"&:hover":{ color:Theme["FOURTH_COLOR"] }, margin:'12px 0' , color:'#eee' , fontWeight:'600' }}>Sign In</Button>
+
+                            </form>
+                        ) : (
+                            <form onSubmit={createUser}>
+
+            <TextField value={userSignUp.email} sx={{ width:'100%' , margin:'12px 0' }} onChange={handleSignUpChange}  type="text" label="Display Name" name="displayName" />
+            <TextField value={userSignUp.email} sx={{ width:'100%' , margin:'12px 0' }} onChange={handleSignUpChange}  type="email" label="Email" name="email" />
+            <TextField value={userSignUp.password} sx={{ width:'100%' , margin:'12px 0' }} onChange={handleSignUpChange}  type="password" label="Password" name="password" />
+                <Button onClick={createUser} sx={{ width:'100%' , padding:'21px 21px' , background:Theme["FOURTH_COLOR"] ,"&:hover":{ color:Theme["FOURTH_COLOR"] }, margin:'12px 0' , color:'#eee' , fontWeight:'600' }}>Sign In</Button>
+
+                            </form>
+                        )
+                }
+
+            
+            <Typography sx={{margin:"21px 0" , fontSize:'18px' , textAlign:'center' , color:Theme["FOURTH_COLOR"] , padding:'0 0' ,margin:'12px 0' }}>{signIn ? "Don't have an account ?" : "Already have an account ?"} <br/> <Typography  onClick={()=> setSignIn(!signIn)} sx={{fontWeight:'600', "&:hover":{ textDecoration:'underline' } , fontSize:'16px' ,color:"#4267B2" }} > Click Here To Sign { signIn ? "Up" : "In"} </Typography> </Typography>
+               
+               
+                </Grid>
+                <Grid item xs={12} lg={6} sx={{  minHeight:'50vh', background:'' , padding:'12px 21px' , display:'flex' , justifyContent:'' , alignItems:'' , flexDirection:'column' }}>
+                    <Typography sx={{ fontSize:'28px' , color:Theme["FOURTH_COLOR"] , padding:'0 0' , fontWeight:'600' }}> {"Use Your Social Media"} </Typography>
+            <Typography sx={{ fontSize:'21px' , color:Theme["FOURTH_COLOR"] , padding:'0 0' , fontWeight:'600',margin:'12px 0' }}> Select One Below </Typography>
+                <img src="https://cdn-icons-png.flaticon.com/512/1968/1968666.png" alt="" style={{ opacity:1, margin:'34px 0',width:'100%', margin:'0 auto ',height:"70px" , objectFit:'contain' }} />
+             <Box sx={{ padding:"21px 0" }}>
+
+     <Button onClick={googleHandler} sx={{ width:'100%' , padding:'14px 21px' , background:'#F4B400' ,"&:hover":{ color:'#F4B400' }, margin:'12px 0' , color:'#eee' , fontWeight:'600' , display:'flex', }}><img style={{height:'34px', margin:'0 12px' , objectFit:'contain'}} src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-suite-everything-you-need-know-about-google-newest-0.png" alt=""/>Continue with Google</Button>
+                <Button onClick={facebookHandler} sx={{ width:'100%' , padding:'14px 21px' , background:'#4267B2' ,"&:hover":{ color:'#4267B2' }, margin:'12px 0' , color:'#eee' , fontWeight:'600' , display:'flex', }}><img style={{height:'34px', margin:'0 12px' , objectFit:'contain'}} src="   https://www.transparentpng.com/download/facebook-logo/facebook-icon-transparent-background-20.png" alt=""/>Continue with Facebook</Button>
+                <Button sx={{ width:'100%' , padding:'14px 21px' , background:'#000' ,"&:hover":{ color:'#000' }, margin:'12px 0' , color:'#eee' , fontWeight:'600' , display:'flex',"&:hover":{filter:"invert(1)" } }}><img style={{height:'28px' ,margin:'0 12px' , marginRight:'28px' ,filter:"invert(1)" , objectFit:'contain'}} src="https://www.freepnglogos.com/uploads/apple-logo-png/file-apple-logo-black-svg-wikimedia-commons-1.png" alt=""/>Continue with Apple</Button>
+                <Button sx={{ width:'100%' , padding:'14px 21px' , background:'#1DA1F2' ,"&:hover":{ color:'#1DA1F2' }, margin:'12px 0' , color:'#eee' , fontWeight:'600' , display:'flex', }}><TwitterIcon sx={{ margin:'0 12px' , fontSize:'34px' }} />  Continue with Twitter</Button>
+                
+             </Box>
+                </Grid>
+                </Grid>
+             </Box>
+             </Drawer>
 
     </Box>
   );

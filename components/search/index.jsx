@@ -164,13 +164,13 @@ setProducts(local)
     		 		</Box>
     		 		) : (
     		 		<Box sx={{display:selectedCat === "" ? "none" : 'block' }}>
-<Typography sx={{ fontSize:'24px' , color:Theme["FOURTH_COLOR"] , padding:'0 0' , fontWeight:'600' }}> { selectedCat} </Typography>
+<Typography sx={{ fontSize:'24px' , color:Theme["FOURTH_COLOR"] , padding:'0 0' , fontWeight:'600' }}> { selectedCat}  <Button onClick={()=> setSelectedCat("")}> X </Button> </Typography>
     		    		  <Grid container>
     		   {
         	categoryResults.map((item,index)=>{
 										return(
         	        		<Grid key={item+index} item xs={6} md={4} lg={2.4}>
-        	        			<ProductItem product={item} color={index % 2 === 0 ? 'rgba(255,0,0,.8)' : 'rgba(0,200,0,.8)'} special={index % 2 === 0 ? 'Hot In' : 'Sale'} image={item.Image} Title={item.Title} Price={item.Price}  />
+        	        			<ProductItem products={categoryResults} product={item} color={index % 2 === 0 ? 'rgba(255,0,0,.8)' : 'rgba(0,200,0,.8)'} special={index % 2 === 0 ? 'Hot In' : 'Sale'} image={item.Image} Title={item.Title} Price={item.Price}  />
         	        		</Grid>
         	        	)
         		}

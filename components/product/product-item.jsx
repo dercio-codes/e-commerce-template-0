@@ -7,9 +7,11 @@ import * as Theme from "../../constants"
 import DoneIcon from '@mui/icons-material/Done';
 import Link from "next/link"
 import { toast } from 'react-toastify';
+import {SelectedProduct} from "./../../pages/_app";
 
 export default function ProductItem(props) {
   const [openDrawer, setOpenDrawer] = React.useState(false);
+  const { selectedProduct , setSelectedProduct } = React.useContext(SelectedProduct)
   const [localProduct, setLocalProduct] = React.useState({
     id:props.product.id,
     Title:props.product.Title,
@@ -26,14 +28,31 @@ export default function ProductItem(props) {
   let similarProducts = []
   // similarProducts ]  = React.useState()
 
+  console.log("length :" ,props.products.length)
   props.products.map((item)=>{
     localProduct.Categories.map((localItem)=>{
-      console.log(item)
-      console.log(localItem)
-      console.log(item.Categories.includes(localItem))
       if(item.Categories.includes(localItem)){
-        similarProducts = [...similarProducts , item]
-        console.log(similarProducts)
+        if(similarProducts.length === 0){
+          similarProducts.push(item)
+          console.log(similarProducts)
+          return
+        }else if(similarProducts.length > 0){
+          similarProducts.map((similarProduct)=>{
+            if(JSON.stringify(similarProduct) === JSON.stringify(item)){
+              console.log("skip this one" , similarProduct.Title)
+            }
+          })
+        }
+        else{
+          similarProducts.map((similarProduct)=>{
+            console.log("Here" , similarProduct.Title)          
+            if(similarProduct.Title !== item.Title ){
+            similarProducts.push(item)
+            console.log(similarProducts)
+            return
+          }
+        })
+        }
       }
     })            
   })
@@ -61,16 +80,20 @@ export default function ProductItem(props) {
         backgroundSize:'contain' ,
         backgroundRepeat:'no-repeat' ,
         display:'flex',
-        // justifyContent:'flex-end',
+        justifyContent:'space-between',
         // padding:'21px'
          }} >
-<Box sx={{ padding:' 12px 21px' , color:'#eee' , fontWeight:'600' , fontSize:'14px' , height:'40px' , background:props.color }}>
-  {props.special}
+<Box sx={{ padding:' 12px 21px' , display:props.product.HotIn ? "flex" : 'none' , color:'#eee' , fontWeight:'600' , fontSize:'14px' , height:'40px' , background:'rgba(0,200,0,.8)' }}>
+  {"Hot In"}
+</Box>
+
+<Box sx={{ padding:' 12px 21px' , display:props.product.Sale ? "flex" : 'none' , color:'#eee' , fontWeight:'600' , fontSize:'14px' , height:'40px' , background:'rgba(255,0,0,.8)' }}>
+  {"Sale "}
 </Box>
 
          {/*<FavoriteIcon />*/}
          </Box>
-        <Typography sx={{ fontSize:'21px' , color:Theme["FOURTH_COLOR"] , textAlign:'center' , padding:'8px 21px' , fontWeight:'600' }}> {props.Title} </Typography>
+        <Typography noWrap={true} sx={{ fontSize:'21px' , color:Theme["FOURTH_COLOR"] , textAlign:'center' , padding:'8px 21px' , fontWeight:'600' }}> {props.Title} </Typography>
         <Typography noWrap={true}  sx={{ fontSize:'16px' , color:Theme["FOURTH_COLOR"] , width:'100%' , textAlign:'center' , padding:'8px 0' , fontWeight:'300' }}> {props.product.Description} </Typography>
     		<Typography sx={{ fontSize:'21px' , color:Theme["FOURTH_COLOR"] , textAlign:'center' , padding:'10px 21px' , fontWeight:'600' }}> R{props.Price} </Typography>
     		
@@ -191,7 +214,7 @@ export default function ProductItem(props) {
               similarProducts.map((item)=>{
 
 return(
-<Grid item md={4} key={item.id} xs={6} sx={{ opacity:'.8' , "&:hover" : { opacity:1 } }} >
+<Grid item md={6} key={item.id} xs={6} sx={{ opacity:'.8' , "&:hover" : { opacity:1 } }} >
          <Box sx={{
           height:'250px',
           width:'100%',
@@ -214,7 +237,12 @@ return(
         <Typography sx={{ fontSize:'21px' , color:Theme["FOURTH_COLOR"] , textAlign:'center' , padding:'10px 21px' , fontWeight:'600' }}> R{item.Price} </Typography>
         
 <Box sx={{ display:'' , width:'100%' }}>
-        <Button onClick={() => setOpenDrawer(true)} sx={{ background:Theme["FOURTH_COLOR"],padding:'16px 12px' , margin:'0 3px' ,color:'#eee' , width:'100%' ,fontWeight:600, "&:hover":{color:Theme["FOURTH_COLOR"]} }}>View Product</Button>
+        <Link href={`/product`}>
+        <Button onClick={() => { 
+          setOpenDrawer(true)
+          setSelectedProduct(item)
+        }} sx={{ background:Theme["FOURTH_COLOR"],padding:'16px 12px' , margin:'0 3px' ,color:'#eee' , width:'100%' ,fontWeight:600, "&:hover":{color:Theme["FOURTH_COLOR"]} }}>View Product</Button>
+        </Link>
 </Box>  </Grid>
   )
   })

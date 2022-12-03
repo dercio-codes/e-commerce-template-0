@@ -22,6 +22,7 @@ import {
 import { storage, db } from "./../firebase/firebaseConfig";
 
 export const DisplayLoader = createContext(false);
+export const SelectedProduct = createContext({});
 export const User = createContext({
   uid:"",
   name:"",
@@ -33,6 +34,7 @@ export const User = createContext({
 });
 function MyApp({ Component, pageProps }) {
   const [ loading , setLoading ] = useState(false)
+  const [ selectedProduct , setSelectedProduct ] = useState({})
   const [ user , setUser ] = useState({
   uid:"",
   name:"",
@@ -67,23 +69,22 @@ const initLists = async () => {
 
   useEffect(()=>{
     const localStorageUser = localStorage.getItem("authUser") ? JSON.parse(localStorage.getItem("authUser")) : {
-  uid:"",
-  name:"",
-  surname:"",
-  profilePicture:"",
-  email:"",
-  orders:[],
-  wishlist:[],
-}  
-console.log(localStorageUser)
-console.log(typeof(localStorageUser))
-    setUser({...localStorageUser})
-  },[user.email , user.uid])
+      uid:"",
+      name:"",
+      surname:"",
+      profilePicture:"",
+      email:"",
+      orders:[],
+      wishlist:[],
+    }  
+      setUser({...localStorageUser})
+  },[user.email , user.uid]);
 
-  // console.log(typeof(user))
 
   return(
     <User.Provider value={{ user , setUser }}>
+    <SelectedProduct.Provider value={{ selectedProduct , setSelectedProduct }}>
+
 <DisplayLoader.Provider value={{ loading , setLoading }}>
 
        { loading ? ( 
@@ -96,6 +97,7 @@ console.log(typeof(localStorageUser))
            )}
         <ToastContainer /> 
 </DisplayLoader.Provider>
+</SelectedProduct.Provider>
     </User.Provider>
     )
 
