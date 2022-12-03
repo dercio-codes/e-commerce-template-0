@@ -12,15 +12,21 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import Link from "next/link"
+import LogoutIcon from '@mui/icons-material/Logout';
+import { storage , googleProvider , facebookProvider , auth , db } from "./../../firebase/firebaseConfig";
+import { signOut } from 'firebase/auth';
+import { User } from "../../pages/_app"
+
 
 export default function Navbar(props) {
   const [openDrawer, setOpenDrawer] = React.useState(false);
+  const { user , setUser } = React.useContext(User)
   const {loading , setLoading } = React.useContext(DisplayLoader);
   const Links = [
   	"Home",
   	"Search",
   	"Account",
-  	"Cart",
+  	// "Cart",
   ]
 
   return (
@@ -103,6 +109,35 @@ padding:{
 	
 <ShoppingCartIcon sx={{ margin:'0 16px' }} />
 <Typography>	{"Cart"}</Typography>
+</MenuItem>
+</Link>
+
+<Link onClick={(e)=> {
+	// e.preventDefault()
+	setOpenDrawer(false)
+	signOut(auth)
+    .then(() => {
+        console.log('logged out');
+    		localStorage.removeItem("authUser");
+    		setUser({
+  uid:"",
+  name:"",
+  surname:"",
+  profilePicture:"",
+  email:"",
+  orders:[],
+  wishlist:[],
+})
+        // navigate('/');
+    })
+    .catch((error) => {
+        console.log(error);
+    });
+}} href={"/"} style={{ width:'100%' }}>
+<MenuItem sx={{ width:'100%' , display:'flex' ,  alignItems:'center' , padding:'16px 21px' }}>
+	
+<LogoutIcon sx={{ margin:'0 16px' }} />
+<Typography>	{"Sign Out"}</Typography>
 </MenuItem>
 </Link>
 <Box sx={{ display:'flex' ,justifyContent:'center' , alignItems:'center' , height:"45%" }}>

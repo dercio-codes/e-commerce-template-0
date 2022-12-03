@@ -4,10 +4,8 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import { Box , Button , IconButton } from '@mui/material';
 
-
 export default function Poster() {
   const [value, setValue] = React.useState(0);
-
 
   return (
     <Box sx={{ 

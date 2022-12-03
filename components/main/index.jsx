@@ -4,6 +4,8 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import { Box , Button , Grid , TextField } from '@mui/material';
 import * as Theme from "../../constants"
+import { query, collection, doc,setDoc , addDoc , getDocs, where } from "firebase/firestore";
+import { storage , db } from "./../../firebase/firebaseConfig";
 
 export default function MainBanner() {
 
@@ -17,6 +19,16 @@ const images = [
 "https://images.pexels.com/photos/1176618/pexels-photo-1176618.jpeg?auto=compress&cs=tinysrgb&w=1600",
 "https://images.pexels.com/photos/581087/pexels-photo-581087.jpeg?auto=compress&cs=tinysrgb&w=1600",
 ]
+const [ email , setEmail] = React.useState("")
+const handleChange = (event) => {
+	setEmail(event.target.value)
+}
+
+const handleSubsribe = async () => {
+	 await setDoc(doc(db, "emails" , email), {
+                                email
+                });
+}
 
   return (
     <Box sx={{ 	
@@ -74,8 +86,8 @@ const images = [
 
     		<Typography sx={{ fontSize:'32px' , color:Theme["FOURTH_COLOR"] , padding:'0 0' , fontWeight:'400' }}> Tired of missing out on new merch? </Typography>
     		 <Box sx={{ display:'flex' , alignItems:'center' , background:'' , }} > 
-	<TextField sx={{ width:{ xs:'100%', md:'370px'} , padding:'16px 0' }}  placeholder={"mail@example.com"}/>
-    		<Button sx={{ background:Theme["FOURTH_COLOR"],padding:'16px 21px' , margin:'0 8px' ,color:'#eee' , fontWeight:600 , "&:hover":{color:Theme["FOURTH_COLOR"]} }}>Subscribe</Button>
+	<TextField type="email" value={email} onChange={handleChange} sx={{ width:{ xs:'100%', md:'370px'} , padding:'16px 0' }}  placeholder={"mail@example.com"}/>
+    		<Button onClick={handleSubsribe} sx={{ background:Theme["FOURTH_COLOR"],padding:'16px 21px' , margin:'0 8px' ,color:'#eee' , fontWeight:600 , "&:hover":{color:Theme["FOURTH_COLOR"]} }}>Subscribe</Button>
     	
     		 </Box>
     		 </Grid>
