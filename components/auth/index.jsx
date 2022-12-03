@@ -234,7 +234,7 @@ const initLists = async () => {
     		// background:'#222',
     		// borderBottom:'1px solid red'
     		 }}>
-                  <Box sx={{ width:'100%' , top:'0' , Index:'9999' , background :"white" , position:'sticky' , display:'flex',justifyContent:'flex-end' , padding:'1.2rem' }}>
+                  <Box sx={{ width:'100%' , top:'0' , Index:'9999' , background :"white"  , display:'flex',justifyContent:'flex-end' , padding:'1.2rem' }}>
      <Button onClick={() => SetAuthOpen(false)} sx={{fontSize:'21px' , color:Theme["FOURTH_COLOR"] , fontWeight:'600' , }}> X
      </Button>
      </Box>
