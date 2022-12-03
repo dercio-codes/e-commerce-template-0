@@ -149,7 +149,7 @@ export default function ProductItem(props) {
                 <Button type={"color"} onClick={()=> setLocalProduct({ 
                 ...localProduct , 
                 Color:item
-                 })} key={item} key={item} value={"255,0,0"} sx={{ opacity:localProduct.Color === item ? 1 : '.7' ,"&:hover":{background:item } , width:'48px', height:'34px' , margin:'0 8px 0 0' , background:item , border:'none' }}>
+                 })}  key={item} value={"255,0,0"} sx={{ opacity:localProduct.Color === item ? 1 : '.7' ,"&:hover":{background:item } , width:'48px', height:'34px' , margin:'0 8px 0 0' , background:item , border:'none' }}>
                   <DoneIcon sx={{ filter :'invert(1)' , fontWeight:600 ,display:localProduct.Color === item ? "flex" :'none' }} />
                 </Button>
               )
