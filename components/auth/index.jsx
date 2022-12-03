@@ -285,7 +285,7 @@ const initLists = async () => {
 
 
 
-              <Drawer anchor="bottom" open={user.uid === ""} sx={{ display:'flex',
+              <Drawer anchor="bottom" open={user.uid === ""} sx={{ display:{ xs:'block' , lg:'none'},
             flexDirection:'column',
             justifyContent:'center',
             alignItems:'center',
