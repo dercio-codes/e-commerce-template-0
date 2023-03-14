@@ -42,7 +42,7 @@ padding:{
   	<Box sx={{ width:'100%' , height:'80px' , background:'' , display:'flex' , justifyContent:'space-between' , alignItems:'center' }}>
 <Box sx={{ width:'120px' , background:'red', height:'120px' , 
 // 	 backgroundImage:'url("/sunday-blom-logo.png")' 
-	 , backgroundPosition:'center' , backgroundSize:'contain',textAlign:'center', }}> LOGO </Box>
+	  backgroundPosition:'center' , backgroundSize:'contain',textAlign:'center', }}> LOGO </Box>
     	<Box sx={{  width:'60%', margin:'0 auto' , height:'100%' , background:'', display:{ xs:'none', md:'flex'} , justifyContent:'space-around' , alignItems:'center' }}>
     	{
     		Links.map((item,index)=>(
