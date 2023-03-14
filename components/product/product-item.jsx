@@ -38,7 +38,7 @@ export default function ProductItem(props) {
   // similarProducts ]  = React.useState()
 
   console.log("length :", props.product && props.products.length);
-  props.products.map((item) => {
+  props.products && props.products.map((item) => {
     localProduct.Categories.map((localItem) => {
       if (item.Categories.includes(localItem)) {
         if (similarProducts.length === 0) {
@@ -491,7 +491,7 @@ export default function ProductItem(props) {
                 More Like This{" "}
               </Typography>
 
-              <Grid container spacing={2}>
+              {/* <Grid container spacing={2}>
                 {similarProducts.map((item) => {
                   return (
                     <Grid
@@ -591,7 +591,7 @@ export default function ProductItem(props) {
                     </Grid>
                   );
                 })}
-              </Grid>
+              </Grid> */}
             </Grid>
           </Grid>
         </Box>
