@@ -38,32 +38,33 @@ export default function ProductItem(props) {
   // similarProducts ]  = React.useState()
 
   console.log("length :", props.product && props.products.length);
-  props.products && props.products.map((item) => {
-    localProduct.Categories.map((localItem) => {
-      if (item.Categories.includes(localItem)) {
-        if (similarProducts.length === 0) {
-          similarProducts.push(item);
-          console.log(similarProducts);
-          return;
-        } else if (similarProducts.length > 0) {
-          similarProducts.map((similarProduct) => {
-            if (JSON.stringify(similarProduct) === JSON.stringify(item)) {
-              console.log("skip this one", similarProduct.Title);
-            }
-          });
-        } else {
-          similarProducts.map((similarProduct) => {
-            console.log("Here", similarProduct.Title);
-            if (similarProduct.Title !== item.Title) {
-              similarProducts.push(item);
-              console.log(similarProducts);
-              return;
-            }
-          });
+  props.products &&
+    props.products.map((item) => {
+      localProduct.Categories.map((localItem) => {
+        if (item.Categories.includes(localItem)) {
+          if (similarProducts.length === 0) {
+            similarProducts.push(item);
+            console.log(similarProducts);
+            return;
+          } else if (similarProducts.length > 0) {
+            similarProducts.map((similarProduct) => {
+              if (JSON.stringify(similarProduct) === JSON.stringify(item)) {
+                console.log("skip this one", similarProduct.Title);
+              }
+            });
+          } else {
+            similarProducts.map((similarProduct) => {
+              console.log("Here", similarProduct.Title);
+              if (similarProduct.Title !== item.Title) {
+                similarProducts.push(item);
+                console.log(similarProducts);
+                return;
+              }
+            });
+          }
         }
-      }
+      });
     });
-  });
 
   return (
     <Paper
@@ -527,7 +528,7 @@ export default function ProductItem(props) {
                           {item.special}
                         </Box>
 
-                        {/*<FavoriteIcon />*/}
+
                       </Box>
                       <Typography
                         sx={{
