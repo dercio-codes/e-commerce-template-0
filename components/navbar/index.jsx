@@ -173,7 +173,7 @@ padding:{
 </Box>
 <Box sx={{ display:"flex" , flexDirection:'column' , height:'25%', justifyContent:'flex-end'}}>
 <Box sx={{ display:'flex ', flexDirection:'column' ,alignItems:'center' , justifyContent:'center', padding:'34px' }}>
-  <Typography>Sunday Blom 2022.</Typography>
+  <Typography>Ecommerce 2023.</Typography>
   <Link href="https://www.instagram.com/thesundayblom/?hl=en">
 <InstagramIcon sx={{ margin:'12px 0' }} />
   </Link>
