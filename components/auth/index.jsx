@@ -235,7 +235,7 @@ export default function Auth() {
       }}
     >
       <Modal
-        open={user.uid === ""}
+        open={false}
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -568,7 +568,7 @@ export default function Auth() {
 
       <Drawer
         anchor="bottom"
-        open={user.uid === ""}
+        open={false}
         sx={{
           display: { xs: "block", lg: "none" },
           flexDirection: "column",
