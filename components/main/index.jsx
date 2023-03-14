@@ -51,7 +51,7 @@ const handleSubsribe = async () => {
     		 <Grid container>
     		 <Grid item xs={12} lg={6}> 
     		 <Box sx={{ display:'flex' , justifyContent:'', flexDirection:{ xs:'column' , md:'row' } , alignItems:'flex-end' , paddingRight:{ xs:'0', md:'34px'} }}>
-    		<Typography sx={{ fontSize:'108px' , color:'' ,margin:'0', padding:'0' , fontWeight:'600' }}>Sunday Blom. </Typography>
+    		<Typography sx={{ fontSize:'108px' , color:'' ,margin:'0', padding:'0' , fontWeight:'600' }}>Summer Special. </Typography>
     		 <Box className="pulsate-fwd" sx={{ 
     				width:{ xs:'100px', md:'120px'} , 
     				height:{ xs:'100px', md:'120px'} , 
@@ -70,7 +70,7 @@ const handleSubsribe = async () => {
     					textDecoration:'underline'
     				},
     				borderRadius:'50%' }} >
-    				Lets Blom
+    				HMU
     				{/*<Box sx={{
     					backgroundImage:'url("https://cdn-icons-png.flaticon.com/512/3106/3106417.png")',
     				backgroundSize:'contain',
@@ -82,7 +82,7 @@ const handleSubsribe = async () => {
     		 </Box>
     		<Typography sx={{ fontSize:'21px' , color:Theme["FOURTH_COLOR"] , padding:'0 0' , fontWeight:'400' }}> Next Event : </Typography>
 
-    		<Typography sx={{ fontSize:'42px' , color:Theme["FOURTH_COLOR"] , padding:'0 0' , fontWeight:'600' }}> 04 December 2022 </Typography>
+    		<Typography sx={{ fontSize:'42px' , color:Theme["FOURTH_COLOR"] , padding:'0 0' , fontWeight:'600' }}> 04 December 2023 </Typography>
 
     		<Typography sx={{ fontSize:'32px' , color:Theme["FOURTH_COLOR"] , padding:'0 0' , fontWeight:'400' }}> Tired of missing out on new merch? </Typography>
     		 <Box sx={{ display:'flex' , alignItems:'center' , background:'' , }} > 
