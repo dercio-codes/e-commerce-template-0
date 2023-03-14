@@ -15,7 +15,7 @@ export default function Home() {
       <Navbar />
 
       <MainBanner />
-      <Product sectionTitle={"The Sunday Blom x Nov"} />
+      <Product sectionTitle={"Summer Edition"} />
       <Poster />
       <Product hidden={true} sectionTitle={"Summer Clothes"} />
 
@@ -28,7 +28,7 @@ export default function Home() {
           padding: "34px",
         }}
       >
-        <Typography>Sunday Blom 2022.</Typography>
+        <Typography>Atomus Dev Templates 2022.</Typography>
         <Link href="#">
           <InstagramIcon sx={{ margin: "12px 0" }} />
         </Link>
