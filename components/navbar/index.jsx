@@ -134,9 +134,10 @@ export default function Navbar(props) {
               width: "100%",
               background: "red",
               height: "250px",
-              backgroundImage: 'url("/sunday-blom-logo.png")',
+              backgroundImage:
+                'url("https://static.vecteezy.com/system/resources/previews/006/547/174/original/creative-modern-abstract-ecommerce-logo-design-colorful-gradient-online-shopping-bag-logo-design-template-free-vector.jpg")',
               backgroundPosition: "center",
-              backgroundSize: "cover",
+              backgroundSize: "contain",
               filter: "invert(1)",
             }}
           />
@@ -309,7 +310,7 @@ export default function Navbar(props) {
               }}
             >
               <Typography>Ecommerce 2023.</Typography>
-              <Link href="https://www.instagram.com/thesundayblom/?hl=en">
+              <Link href="#">
                 <InstagramIcon sx={{ margin: "12px 0" }} />
               </Link>
             </Box>
